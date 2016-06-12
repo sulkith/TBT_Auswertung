@@ -64,7 +64,7 @@
 		
 		<div class="UserModLeft">
 			<div style="height:100%; width:250px;">
-				<select name='BowClassSelect' size='20' style="width:100%; height:100%;">
+				<select name='ArcherClassSelect' size='20' style="width:100%; height:100%;">
 					<?php
 						//Print users
 						addArcherClassesToSelectField(-1);
