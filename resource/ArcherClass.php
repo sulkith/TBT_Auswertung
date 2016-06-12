@@ -25,7 +25,7 @@ class ArcherClassObject{
 		$erg = sqlexecutesinglequery($query);
 		$classObj = mysql_fetch_object($erg);
 		if(!$classObj){
-			error("UID: ".$uid." wurde nicht gefunden");
+			error("ID: ".$id." wurde nicht gefunden");
 		}
 		$this->mUid=$classObj->ClassID;
 		$this->mName=$classObj->ClassName;
@@ -63,12 +63,23 @@ function getACIDForArcherClassName($name)
 	return $ClassObj->ClassID;
 }
 function addArcherClassesToSelectField($select){
-	$query = "SELECT ClassName FROM archerclasses;";
+	$query = "SELECT ClassID, ClassName FROM archerclasses;";
 	$erg = sqlexecutesinglequery($query);
 	while($ClassObj = mysql_fetch_object($erg))
 	{
-		echo "<option>".$ClassObj->ClassName."</option>\n";
+		if($ClassObj->ClassID == $select)
+			echo "<option selected value=".$ClassObj->ClassID.">".$ClassObj->ClassName."</option>\n";
+		else
+			echo "<option value=".$ClassObj->ClassID.">".$ClassObj->ClassName."</option>\n";
 	}
+}
+function checkArcherClassExists($id)
+{
+	$query = "SELECT * FROM archerclasses WHERE ClassID='".$id."';";
+	$erg = sqlexecutesinglequery($query);
+	if(($userobj = mysql_fetch_object($erg)))
+		return true;
+	return false;
 }
 function deleteArcherClass($id)
 {

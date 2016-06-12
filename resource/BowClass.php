@@ -63,12 +63,23 @@ function getBCIDForBowClassName($name)
 	return $ClassObj->ClassNr;
 }
 function addBowClassesToSelectField($select){
-	$query = "SELECT ClassName FROM BowClasses;";
+	$query = "SELECT ClassNr, ClassName FROM BowClasses;";
 	$erg = sqlexecutesinglequery($query);
 	while($ClassObj = mysql_fetch_object($erg))
 	{
-		echo "<option>".$ClassObj->ClassName."</option>\n";
+		if($ClassObj->ClassNr == $select)
+			echo "<option selected value=".$ClassObj->ClassNr.">".$ClassObj->ClassName."</option>\n";
+		else
+			echo "<option value=".$ClassObj->ClassNr.">".$ClassObj->ClassName."</option>\n";
 	}
+}
+function checkBowClassExists($id)
+{
+	$query = "SELECT * FROM bowclasses WHERE ClassNr='".$id."';";
+	$erg = sqlexecutesinglequery($query);
+	if(($userobj = mysql_fetch_object($erg)))
+		return true;
+	return false;
 }
 function deleteBowClass($id)
 {

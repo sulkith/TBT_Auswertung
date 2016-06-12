@@ -54,8 +54,17 @@ class userObject{
 function addParticipation($FirstName, $LastName, $Club, $EmailAddress, $BowClassID, $ArcherClassID, $Veggie, $PaidDate)
 {
 	#todo plaus BowClassID, ArcherClassID, PaidDate
+	if(!checkArcherClassExists($ArcherClassID))
+	{
+		return 2;
+	}
+	if(!checkBowClassExists($ArcherClassID))
+	{
+		return 1;
+	}
 	sqlexecutesinglequery("INSERT INTO `participation` (`StartNr`, `LastName`, `FirstName`, `Club`, `EmailAddress`, `BowClassID`, `ArcherClassID`, `Points`, `Kills`, `Veggie`, `PaidDate`, `GroupNr`, `TicketID`) VALUES
-(NULL, '".$LastName."', '".$FirstName."', '".$Club."', '".$EmailAddress."', ".$BowClassID.", ".$ArcherClassID.", -1, -1, ".$Veggie.", '0000-00-00', 0, '0');");
+(NULL, '".$LastName."', '".$FirstName."', '".$Club."', '".$EmailAddress."', ".$BowClassID.", ".$ArcherClassID.", -1, -1, ".$Veggie.", '".$PaidDate."', 0, '0');");
+	return 0;
 }
 function getUserNameForUid($uid){
 	$uid = intval($uid,10);
@@ -70,11 +79,19 @@ function getUserNameForUid($uid){
 
 
 function addUngroupedUsersToSelectField(){
-	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE GroupNr == 0;";
+	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE GroupNr = 0;";
 	$erg = sqlexecutesinglequery($query);
 	while($pObj = mysql_fetch_object($erg))
 	{
 		echo "<option value=".$pObj->StartNr.">".$pObj->LastName." ".$pObj->FirstName."</option>\n";
+	}
+}
+function addUsersToGroupEnumerate($groupID){
+	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE GroupNr = '".$groupID."';";
+	$erg = sqlexecutesinglequery($query);
+	while($pObj = mysql_fetch_object($erg))
+	{
+		echo "<li>".$pObj->LastName." ".$pObj->FirstName."</li>\n";
 	}
 }
 function addAllUsersToSelectField(){
