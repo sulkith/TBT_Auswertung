@@ -1,9 +1,8 @@
 <?php
-	include_once("resource/sqldb.php");
-	include("resource/ArcherClass.php");
-	include("resource/BowClass.php");
-	include("resource/Participation.php");
-	include("resource/toolbar.php");
+	include("projectspecific/ArcherClass.php");
+	include("projectspecific/BowClass.php");
+	include("projectspecific/Participation.php");
+	include("resource/referrer.php");
 	if(isset($_POST['action']))
 	if($_POST['action']=="Eintragen")
 	{
@@ -44,19 +43,13 @@
 		}
 	}
 	setReferrer("AddParticipation.php");
+	$title = "Teilnahme hinzuf&uuml;gen";
+	include_once("projectspecific/template_head.php");
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
- <head>
-	<title>Teilnahme hinzuf&uuml;gen</title>
-	<link rel="stylesheet" type="text/css" href="CSS/standard.css" />
- </head>
- <body>
- <?php 
-	getCompleteToolbar();
-	if(isset($info))getInfoBox($info);
- ?>
 <form action="AddParticipation.php" method="post">
+<div class="CaptionSmall">
+		<h1>Teilnahme hinzuf&uuml;gen</h1>
+	</div>
 <table>
 <tr><td>Vorname:</td><td><input type="text" name="name" value="<?php if(isset($name))echo $name; ?>" /></td></tr>
 <tr><td>Nachname</td><td><input type="text" name="lastname" value="<?php if(isset($lastname))echo $lastname; ?>"/></td></tr>
@@ -88,3 +81,4 @@ else
   </form>
   	</body>
 </html>
+<?php include_once("projectspecific/template_foot.php");?>

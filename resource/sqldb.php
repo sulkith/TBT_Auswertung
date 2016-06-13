@@ -1,7 +1,7 @@
 <?php
 
 function sqlopenhandle(){
-	include ("settings.php");
+	include ("settings/settings.php");
 	$chandle = mysql_connect($sqlhost, $sqldbuser, $sqldbpass) 
 		or die("Connection Failure to Database");
 	//echo "Connected to database server<br>";
@@ -26,7 +26,7 @@ function sqlexecutesinglequery($query){
 }
 
 function sqlopenhandleGlobal(){
-	include ("settings.php");
+	include ("settings/settings.php");
 	$chandle = mysql_connect($sqlhost, $sqldbuser, $sqldbpass) 
 		or die("Connection Failure to Database");
 	return $chandle;
@@ -44,7 +44,7 @@ function sqlexecutesinglequerytry($query){
 	return $ergebnis;
 }
 function sqlescape($string){
-	include ("settings.php");
+	include ("settings/settings.php");
 	return addslashes($string);
 }
 

@@ -1,8 +1,5 @@
 <?php
-include_once("permissions.php");
-include_once("sqldb.php");
-include_once("error.php");
-include 'settings.php';
+include_once("resource/sqldb.php");
 class ArcherClassObject{
 	private $mID;
 	private $mName;

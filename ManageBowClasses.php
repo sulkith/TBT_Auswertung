@@ -1,7 +1,6 @@
 <?php
-	include("resource/BowClass.php");
+	include("projectspecific/BowClass.php");
 	include_once 'resource/referrer.php';
-	include("resource/toolbar.php");
 	
 	
 	if(isset($_POST['action'])){
@@ -46,18 +45,9 @@
 	}
 	
 	setReferrer("ManageBowClasses.php");
+	$title = "Bogenklassen Management";
+	include_once("projectspecific/template_head.php");
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
- <head>
-	<title>Bogenklassen Management</title>
-	<link rel="stylesheet" type="text/css" href="CSS/standard.css" />
- </head>
- <body>
-  <?php 
-	getCompleteToolbar();
-	if(isset($info))getInfoBox($info);
- ?>
   <form action="ManageBowClasses.php" method="post">
 	<div class="CaptionSmall">
 		<h1>Bogenklassen Einstellungen</h1>
@@ -86,5 +76,4 @@
 
 	</div>
 	</form>
-	</body>
-</html>
+<?php include_once("projectspecific/template_foot.php");?>

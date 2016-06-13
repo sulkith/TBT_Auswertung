@@ -1,9 +1,6 @@
 <?php
-	#include("resource/auth.php");
-	include("resource/ArcherClass.php");
-	#include_once("resource/sqldb.php");
+	include("projectspecific/ArcherClass.php");
 	include_once 'resource/referrer.php';
-	include_once 'resource/toolbar.php';
 	
 	
 	if(isset($_POST['action'])){
@@ -43,18 +40,9 @@
 	}
 	
 	setReferrer("ManageBowClasses.php");
+	$title = "Sch&uuml;tzenklassen Management";
+	include_once("projectspecific/template_head.php");
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
- <head>
-	<title>Schützenklassen Management</title>
-	<link rel="stylesheet" type="text/css" href="CSS/standard.css" />
- </head>
- <body>
-   <?php 
-	getCompleteToolbar();
-	if(isset($info))getInfoBox($info);
-	?>
   <form action="ManageArcherClasses.php" method="post">
 	
 	<div class="CaptionSmall">
@@ -84,5 +72,4 @@
 
 	</div>
 	</form>
-	</body>
-</html>
+<?php include_once("projectspecific/template_foot.php");?>
