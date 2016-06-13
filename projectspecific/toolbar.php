@@ -17,7 +17,7 @@
 	{
 		echo "
 		<div class=\"ToolBar\">
-			<input type=button value='Zur&uuml;ck' <?php echo getOnClick(); ?> />
+			<input type=button value='Zur&uuml;ck' ".getOnClick()." />
 		</div>";
 	}
 	function getInfoBox($info)
