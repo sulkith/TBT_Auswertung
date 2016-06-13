@@ -1,7 +1,7 @@
 <?php
 	include_once("resource/sqldb.php");
 	include_once('resource/referrer.php');
-	include("resource/grouptools.php");
+	include("projectspecific/grouptools.php");
 	
 	
 	
@@ -15,4 +15,4 @@
 	createGroupTable(3,5)
 ?>
 
-<?php include_once("projectspecific/template_foot.php");?>
+<?php $ArcherSymbolsLegend=1; include_once("projectspecific/template_foot.php");?>

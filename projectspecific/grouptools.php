@@ -21,6 +21,11 @@ function createGroupTable($x,$y)
 		}
 		echo "</tr>";
 	}
+	echo "<tr><td> unzugeordnete Teilnehmer<br><ul>";
+	addUsersToGroupEnumerate(0);
+	echo "</ul></td><td>nicht erschienene Teinehmer<br><ul>";
+	addUsersToGroupEnumerate(-1);
+	echo "</ul></td></tr>";
 	echo "</table>";	
 }
 ?>

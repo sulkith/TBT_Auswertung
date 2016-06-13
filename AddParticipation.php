@@ -79,6 +79,4 @@ else
 
 <input type="submit" name="action" value='Eintragen' />
   </form>
-  	</body>
-</html>
 <?php include_once("projectspecific/template_foot.php");?>
