@@ -9,10 +9,13 @@
  </head>
  <body>
  <?php 
-	if(!isset($smalltoolbar))
+	if(isset($dialog))
+		getDialogToolbar();
+	else if(!isset($smalltoolbar))
 		getCompleteToolbar();
 	else
 		getSmallToolbar();
 	
 	if(isset($info))getInfoBox($info);
+	if(isset($error))getInfoBox($error);
  ?>

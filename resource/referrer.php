@@ -30,4 +30,9 @@
 		$var = linkBack();
 		return "onclick=\"window.location.href='".$var."'\"";
 	}
+	function getOnClickNoReferrer()
+	{
+		$var = linkBackNoReferrer();
+		return "onclick=\"window.location.href='".$var."'\"";
+	}
 ?>

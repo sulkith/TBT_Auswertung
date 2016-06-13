@@ -14,7 +14,7 @@ function createGroupTable($x,$y)
 		for($xi = 0; $xi<$x;$xi++)
 		{
 			$group = $yi * $x + $xi + 1;
-			echo "<td><a href='modifygroup.php?group=".$group."'>Gruppe ".$group."</a><br><ul>";
+			echo "<td><b>Gruppe ".$group."</b><br><ul>";
 			addUsersToGroupEnumerate($group);
 			#todo Print Group Members
 			echo "</ul></td>";

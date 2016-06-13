@@ -9,9 +9,11 @@
 		<h1>TBT Auswertung</h1>
 	</div>
 	<div class="BodySmall">
-		<input type=button value='Bogenklassen verwalten' onclick="window.location.href='ManageBowClasses.php'" /><br>
-		<input type=button value='Sch&uuml;tzenklassen verwalten' onclick="window.location.href='ManageArcherClasses.php'" /><br><br>
-		<input type=button value='Teilnahme hinzuf&uuml;gen' onclick="window.location.href='AddParticipation.php'" /><br>
-		<input type=button value='Gruppenzuordnung' onclick="window.location.href='groups.php'" /><br>
+	<table><tr><td>
+		<input type=button style='width:100%' value='Bogenklassen verwalten' onclick="window.location.href='ManageBowClasses.php'" /></td></tr><tr><td>
+		<input type=button style='width:100%' value='Sch&uuml;tzenklassen verwalten' onclick="window.location.href='ManageArcherClasses.php'" /></td></tr><tr><td>
+		</td></tr><tr><td>
+		<input type=button style='width:100%' value='Teilnahme hinzuf&uuml;gen' onclick="window.location.href='AddParticipation.php'" /></td></tr><tr><td>
+		<input type=button style='width:100%' value='Gruppenzuordnung' onclick="window.location.href='groups.php'" /></td></tr><tr><td>
 	</div>
 <?php include_once("projectspecific/template_foot.php");?>

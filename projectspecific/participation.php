@@ -1,5 +1,6 @@
 <?php
 include_once("resource/sqldb.php");
+include_once("resource/error.php");
 class participationObject{
 	private $mPID;
 	private $mFirstName;
@@ -53,6 +54,10 @@ class participationObject{
 	function setPoints($p)
 	{
 		$this->mPoints = $p;
+		sqlexecutesinglequery("
+			UPDATE participation SET Points = '".$this->mPoints."' WHERE StartNr=".$this->mPID.";
+		");
+		
 	}
 	function getKills()
 	{
@@ -61,6 +66,9 @@ class participationObject{
 	function setKills($p)
 	{
 		$this->mKills = $p;
+		sqlexecutesinglequery("
+			UPDATE participation SET Kills = '".$this->mKills."' WHERE StartNr=".$this->mPID.";
+		");
 	}
 	function getGroup()
 	{
@@ -68,7 +76,10 @@ class participationObject{
 	}
 	function setGroup($p)
 	{
-		$this->mGroupNr = $p;
+		$this->mGroupNr = intval($p);
+		sqlexecutesinglequery("
+			UPDATE participation SET GroupNr = '".$this->mGroupNr."' WHERE StartNr=".$this->mPID.";
+		");
 	}
 	function getLastName()
 	{
@@ -77,6 +88,9 @@ class participationObject{
 	function setLastName($p)
 	{
 		$this->mLastName = $p;
+		sqlexecutesinglequery("
+			UPDATE participation SET LastName = '".$this->mLastName."' WHERE StartNr=".$this->mPID.";
+		");
 	}
 	function getFirstName()
 	{
@@ -85,6 +99,9 @@ class participationObject{
 	function setFirstName($p)
 	{
 		$this->mFirstName = $p;
+		sqlexecutesinglequery("
+			UPDATE participation SET FirstName = '".$this->mFirstName."' WHERE StartNr=".$this->mPID.";
+		");
 	}
 	function getClub()
 	{
@@ -93,22 +110,60 @@ class participationObject{
 	function setClub($p)
 	{
 		$this->mClub = $p;
+		sqlexecutesinglequery("
+			UPDATE participation SET Club = '".$this->mClub."' WHERE StartNr=".$this->mPID.";
+		");
 	}
 	function getEmail()
 	{
 		return $this->mEmail;
 	}
+	function setEmail($p)
+	{
+		$this->mEmail = $p;
+		sqlexecutesinglequery("
+			UPDATE participation SET EmailAddress = '".$this->mEmail."' WHERE StartNr=".$this->mPID.";
+		");
+	}
 	function getBowClass()
 	{
 		return $this->mBowClass;
+	}
+	function setBowClass($p)
+	{
+		if(!checkBowClassExists($p))
+			error("Invalid Bow Class ".$p);
+		$this->mBowClass = $p;
+		sqlexecutesinglequery("
+			UPDATE participation SET BowClassID = '".$this->mBowClass."' WHERE StartNr=".$this->mPID.";
+		");
 	}
 	function getArcherClass()
 	{
 		return $this->mArcherClass;
 	}
+	function setArcherClass($p)
+	{
+		if(!checkArcherClassExists($p))
+			error("Invalid Archer Class ".$p);
+		$this->mArcherClass = $p;
+		sqlexecutesinglequery("
+			UPDATE participation SET ArcherClassID = '".$this->mArcherClass."' WHERE StartNr=".$this->mPID.";
+		");
+	}
 	function getVeggie()
 	{
 		return $this->mVeggie;
+	}
+	function setVeggie($p)
+	{
+		if($p!=true)
+			$this->mVeggie = false;
+		else
+			$this->mVeggie=true;
+		sqlexecutesinglequery("
+			UPDATE participation SET Veggie = '".$this->mVeggie."' WHERE StartNr=".$this->mPID.";
+		");
 	}
 	function isFinished()
 	{
@@ -169,6 +224,28 @@ function addAllUsersToSelectField(){
 }
 function addUsersToGroupEnumerate($groupID){
 	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE GroupNr = '".$groupID."';";
+	$erg = sqlexecutesinglequery($query);
+	#TODO add Link to modify user
+	while($pObj = mysql_fetch_object($erg))
+	{
+		echo "<li><a href=\"ModifyParticipation.php?pid=".$pObj->StartNr."\">".
+		formatParticipationName($pObj->StartNr)."</a></li>\n";
+	}
+}
+function addAllParticipatorsToEnumerateSorted()
+{
+	$query = "SELECT StartNr, FirstName, LastName FROM participation ORDER BY LastName,FirstName;";
+	$erg = sqlexecutesinglequery($query);
+	#TODO add Link to modify user
+	while($pObj = mysql_fetch_object($erg))
+	{
+		echo "<li><a href=\"ModifyParticipation.php?pid=".$pObj->StartNr."\">".
+		formatParticipationName($pObj->StartNr)."</a></li>\n";
+	}
+}
+function addParticipatorsToEnumerateSorted()
+{
+	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE Points=-1 AND GroupNr != -1 ORDER BY LastName,FirstName;";
 	$erg = sqlexecutesinglequery($query);
 	#TODO add Link to modify user
 	while($pObj = mysql_fetch_object($erg))
