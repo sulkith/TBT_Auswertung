@@ -243,9 +243,20 @@ function addAllParticipatorsToEnumerateSorted()
 		formatParticipationName($pObj->StartNr)."</a></li>\n";
 	}
 }
-function addParticipatorsToEnumerateSorted()
+function addParticipatorsToEnumerateSortedNoPoints()
 {
 	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE Points=-1 AND GroupNr != -1 ORDER BY LastName,FirstName;";
+	$erg = sqlexecutesinglequery($query);
+	#TODO add Link to modify user
+	while($pObj = mysql_fetch_object($erg))
+	{
+		echo "<li><a href=\"ModifyParticipation.php?pid=".$pObj->StartNr."\">".
+		formatParticipationName($pObj->StartNr)."</a></li>\n";
+	}
+}
+function addParticipatorsToEnumerateSortedNoResult()
+{
+	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE Points=-2 OR GroupNr = -1 ORDER BY LastName,FirstName;";
 	$erg = sqlexecutesinglequery($query);
 	#TODO add Link to modify user
 	while($pObj = mysql_fetch_object($erg))
@@ -259,17 +270,17 @@ function formatParticipationName($pid)
 	$pObj = new participationObject($pid);
 	$points = $pObj->getPoints();
 	$group = $pObj->getGroup();
-	if($points == -2)
+	if(($points == -2)||($group == -1))
 		$string = "<s>";
 	else
 		$string = "";
 	
 	$string .= " ".$pObj->getLastName()." ".$pObj->getFirstName();
-	
-	if($points == -2)
+	if(($points == -2)||($group == -1))
 		$string .= "</s>";
 	else if($points != -1)
 		$string .=  " &radic;";
+	
 	return $string;
 }
 function checkParticipationExists($id)
