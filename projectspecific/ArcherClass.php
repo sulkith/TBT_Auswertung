@@ -60,6 +60,14 @@ function getACIDForArcherClassName($name)
 		return -1;
 	return $ClassObj->ClassID;
 }
+function getArcherClassName($id)
+{
+	$query = "SELECT * FROM archerclasses WHERE ClassID='".$id."';";
+	$erg = sqlexecutesinglequery($query);
+	if(!($ClassObj = mysql_fetch_object($erg)))
+		return -1;
+	return $ClassObj->ClassName;
+}
 function addArcherClassesToSelectField($select){
 	$query = "SELECT ClassID, ClassName FROM archerclasses;";
 	$erg = sqlexecutesinglequery($query);

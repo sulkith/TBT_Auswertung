@@ -60,6 +60,14 @@ function getBCIDForBowClassName($name)
 		return -1;
 	return $ClassObj->ClassNr;
 }
+function getBowClassName($id)
+{
+	$query = "SELECT * FROM BowClasses WHERE ClassNr='".$id."';";
+	$erg = sqlexecutesinglequery($query);
+	if(!($ClassObj = mysql_fetch_object($erg)))
+		return -1;
+	return $ClassObj->ClassName;
+}
 function addBowClassesToSelectField($select){
 	$query = "SELECT ClassNr, ClassName FROM BowClasses;";
 	$erg = sqlexecutesinglequery($query);

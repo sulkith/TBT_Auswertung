@@ -95,7 +95,7 @@
 				else
 				{
 					if($aclass != $pObj->getArcherClass())
-						$pObj->setArcherClass($bclass);
+						$pObj->setArcherClass($aclass);
 					$aCObj = new ArcherClassObject($aclass);
 					$aclasstext = $aCObj->getName();
 				}

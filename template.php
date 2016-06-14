@@ -1,6 +1,5 @@
 <?php
-	include_once("resource/sqldb.php");
-	include("resource/toolbar.php");
+	include("resource/referrer.php");
 	
 	setReferrer("template.php");#TODO
 	$title = "Template"; #TODO
