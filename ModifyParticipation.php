@@ -43,10 +43,10 @@
 			if(($name=$_POST['name'])=="")
 				$info .= "Kein Vorname eingegeben<br>";
 			if(($lastname=$_POST['lastname'])=="")
-				$info .= "Kein Nachname eingegeben";
+				$info .= "Kein Nachname eingegeben<br>";
 
 			if(($veg=$_POST['Veggie'])=="")
-				$info .= "Veggie nicht eingegeben";
+				$info .= "Veggie nicht eingegeben<br>";
 			
 			$bclass=$_POST['BowClassSelect'];
 			$aclass=$_POST['ArcherClassSelect'];			
@@ -82,20 +82,20 @@
 			{
 				#points set check bclass aclass...
 				if($bclass == -1)
-					$error .= "Keine Bogenklasse eingegeben";
+					$error .= "Keine Bogenklasse eingegeben<br>";
 				else
 				{
 					if($bclass != $pObj->getBowClass())
-						$pObj->setBowClass($bclass);
+					$pObj->setBowClass($bclass);
 					$bCObj = new BowClassObject($bclass);
 					$bclasstext = $bCObj->getName();
 				}
 				if($aclass == -1)
-					$error .= "Keine Sch&uuml;tzenklasse eingegeben";
+					$error .= "Keine Sch&uuml;tzenklasse eingegeben<br>";
 				else
 				{
 					if($aclass != $pObj->getArcherClass())
-						$pObj->setArcherClass($aclass);
+					$pObj->setArcherClass($aclass);
 					$aCObj = new ArcherClassObject($aclass);
 					$aclasstext = $aCObj->getName();
 				}
@@ -109,26 +109,29 @@
 					if($points != $pObj->getPoints())
 						$pObj->setPoints($points);
 				}
+				else
+				{
+					$finished = false;
+				}
 				
 				
 			}
 			else
 			{
+				$finished = false;
 				if($bclass != -1)
 				{
 					if($bclass != $pObj->getBowClass())
-						$pObj->setBowClass($bclass);
-					$bCObj = new BowClassObject($bclass);
-					$bclasstext = $bCObj->getName();
+					$pObj->setBowClass($bclass);
 				}
 				if($aclass != -1)
 				{
 					if($aclass != $pObj->getArcherClass())
-						$pObj->setArcherClass($aclass);
-					$aCObj = new ArcherClassObject($aclass);
-					$aclasstext = $aCObj->getName();
+					$pObj->setArcherClass($aclass);
 				}
+
 			}
+			
 			if($points =="" && ($pObj->getPoints()>=0))
 			{
 				$pObj->setKills(-1);
@@ -143,6 +146,10 @@
 			}
 		}
 	}
+	$bCObj = new BowClassObject($pObj->getBowClass());
+	$bclasstext = $bCObj->getName();
+	$aCObj = new ArcherClassObject($pObj->getArcherClass());
+	$aclasstext = $aCObj->getName();
 	
 	$title = "Teilnahme bearbeiten";
 	$dialog = 1;

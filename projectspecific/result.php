@@ -80,6 +80,15 @@ function checkResultSetElementExists($rsid,$aclass,$bclass)
 	return false;
 
 }
+function checkResultSetElementHasArcher($aclass,$bclass)
+{
+	$query = "SELECT * FROM participation WHERE BowClassID=".$bclass." AND ArcherClassID=".$aclass.";";
+	$erg = sqlexecutesinglequery($query);
+	if(($userobj = mysql_fetch_object($erg)))
+		return true;
+	return false;
+
+}
 function getUnusedResultSetElementList()
 {
 	$erg = sqlexecutesinglequery("SELECT archerclasses.ClassID AS aclass, archerclasses.ClassName AS aname , 
@@ -91,6 +100,37 @@ function getUnusedResultSetElementList()
 			echo "<li>".$pObj->aname." AND ".$pObj->bname."</li>";
 		}
 	}
+}
+function getUnusedResultSetElementListString()
+{
+	$s = "";
+	$erg = sqlexecutesinglequery("SELECT archerclasses.ClassID AS aclass, archerclasses.ClassName AS aname , 
+	bowclasses.ClassNr AS bclass, bowclasses.ClassName AS bname FROM bowclasses, archerclasses;");
+	while($pObj = mysql_fetch_object($erg))
+	{
+		if(!checkResultSetElementContentExists($pObj->aclass, $pObj->bclass))
+		{
+			$s .= "<li>".$pObj->aname." AND ".$pObj->bname."</li>";
+		}
+	}
+	return $s;
+}
+function getUnusedResultSetElementListWithActiveArchersString()
+{
+	$s = "";
+	$erg = sqlexecutesinglequery("SELECT archerclasses.ClassID AS aclass, archerclasses.ClassName AS aname , 
+	bowclasses.ClassNr AS bclass, bowclasses.ClassName AS bname FROM bowclasses, archerclasses;");
+	while($pObj = mysql_fetch_object($erg))
+	{
+		if(!checkResultSetElementContentExists($pObj->aclass, $pObj->bclass))
+		{
+			if(checkResultSetElementHasArcher($pObj->aclass, $pObj->bclass))
+			{	
+				$s .= "<li>".$pObj->aname." AND ".$pObj->bname."</li>";
+			}
+		}
+	}
+	return $s;
 }
 function getResultSet($id)
 {
@@ -232,6 +272,20 @@ function getResultSetTable()
 		$pObj->ResultSetID."\">bearbeiten</a></td>
 		<td><a href=\"ManageResultSets.php?remove=".
 		$pObj->ResultSetID."\">entfernen</a></td></tr>";
+	}
+}
+function getCompleteResultSets($tableHead, $tableFoot)
+{
+	$query = "SELECT ResultSetID, ResultSetName FROM ResultSets;";
+	$erg = sqlexecutesinglequery($query);
+	#TODO add Link to modify user
+	while($pObj = mysql_fetch_object($erg))
+	{
+		echo "<h1>".$pObj->ResultSetName."</h1>";
+		echo $tableHead;
+		getResultColspan();
+		getResultSet($pObj->ResultSetID); 
+		echo $tableFoot;	
 	}
 }
 

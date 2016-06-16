@@ -16,7 +16,9 @@
 		</td></tr><tr><td>
 		<input type=button style='width:100%' value='Teilnahme hinzuf&uuml;gen' onclick="window.location.href='AddParticipation.php'" /></td></tr><tr><td>
 		<input type=button style='width:100%' value='Gruppenzuordnung' onclick="window.location.href='groups.php'" /></td></tr><tr><td>
-		<input type=button style='width:100%' value='Ergebniserfassung' onclick="window.location.href='AlphabeticalParticipation.php'" /></td></tr>
+		<input type=button style='width:100%' value='Ergebniserfassung' onclick="window.location.href='AlphabeticalParticipation.php'" /></td></tr><tr><td>
+		</td></tr><tr><td>
+		<input type=button style='width:100%' value='Ergebnislisten anzeigen' onclick="window.location.href='showResult.php'" /></td></tr>
 		</table>
 	</div>
 <?php include_once("projectspecific/template_foot.php");?>

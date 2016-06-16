@@ -189,8 +189,8 @@ function addParticipation($FirstName, $LastName, $Club, $EmailAddress, $BowClass
 	{
 		return 1;
 	}
-	sqlexecutesinglequery("INSERT INTO `participation` (`StartNr`, `LastName`, `FirstName`, `Club`, `EmailAddress`, `BowClassID`, `ArcherClassID`, `Points`, `Kills`, `Veggie`, `PaidDate`, `GroupNr`, `TicketID`) VALUES
-(NULL, '".$LastName."', '".$FirstName."', '".$Club."', '".$EmailAddress."', ".$BowClassID.", ".$ArcherClassID.", -1, -1, ".$Veggie.", '".$PaidDate."', 0, '0');");
+	sqlexecutesinglequery("INSERT INTO `participation` (`StartNr`, `LastName`, `FirstName`, `Club`, `EmailAddress`, `BowClassID`, `ArcherClassID`, `Points`, `Kills`, `Veggie`, `RegisterDate`, `PaidDate`, `GroupNr`, `TicketID`) VALUES
+(NULL, '".$LastName."', '".$FirstName."', '".$Club."', '".$EmailAddress."', ".$BowClassID.", ".$ArcherClassID.", -1, -1, ".$Veggie.", CURRENT_DATE(), '".$PaidDate."', 0, '0');");
 	return 0;
 }
 function getUserNameForUid($uid){
@@ -264,6 +264,19 @@ function addParticipatorsToEnumerateSortedNoResult()
 		echo "<li><a href=\"ModifyParticipation.php?pid=".$pObj->StartNr."\">".
 		formatParticipationName($pObj->StartNr)."</a></li>\n";
 	}
+}
+function getMissingParticipatorsToEnumerateSorted()
+{
+	$s = "";
+	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE Points=-1 ORDER BY LastName,FirstName;";
+	$erg = sqlexecutesinglequery($query);
+	#TODO add Link to modify user
+	while($pObj = mysql_fetch_object($erg))
+	{
+		$s .= "<li><a href=\"ModifyParticipation.php?pid=".$pObj->StartNr."\">".
+		formatParticipationName($pObj->StartNr)."</a></li>\n";
+	}
+	return $s;
 }
 function formatParticipationName($pid)
 {
