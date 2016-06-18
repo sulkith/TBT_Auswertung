@@ -1,9 +1,10 @@
 <?php
-	include("projectspecific/participation.php");
-	include("projectspecific/ArcherClass.php");
-	include("projectspecific/BowClass.php");
+	include_once("projectspecific/participation.php");
+	include_once("projectspecific/ArcherClass.php");
+	include_once("projectspecific/BowClass.php");
 	include_once("formatter/ClassOption.php");
 	include_once("resource/referrer.php");
+	include_once("resource/misc.php");
 	$info = "";
 	$error = "";
 	if(isset($_GET['pid']))
@@ -29,6 +30,8 @@
 		$kills = $pObj->getKills();
 		$group = $pObj->getGroup();
 		$finished = $pObj->isFinished();
+		$paiddate = formatDateFromSQL($pObj->getPaidDate());
+		$registereddate = formatDateFromSQL($pObj->getRegisteredDate());
 	}
 	else if(isset($_POST['action']))
 	{
@@ -203,6 +206,8 @@ else
 ?>
 </select></td></tr>
 <tr><td>E-Mail</td><td><input type="text" name="email" value="<?php if(isset($email))echo $email; ?>"/></td></tr>
+<tr><td>Anmeldedatum</td><td><input type="text" value="<?php echo $registereddate; ?>" disabled/></td></tr>
+<tr><td>Zahldatum</td><td><input type="text" value="<?php echo $paiddate; ?>" disabled/></td></tr>
 </table>
 
 <input type="submit" name="action" value='Speichern' />

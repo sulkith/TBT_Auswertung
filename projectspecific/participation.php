@@ -13,6 +13,7 @@ class participationObject{
 	private $mKills;
 	private $mVeggie;
 	private $mPaidDate;
+	private $mRegisteredDate;
 	private $mGroupNr;
 	
 	function __construct()
@@ -46,7 +47,16 @@ class participationObject{
 		$this->mVeggie=$pObj->Veggie;
 		$this->mPaidDate=$pObj->PaidDate;
 		$this->mGroupNr=$pObj->GroupNr;
+		$this->mRegisteredDate=$pObj->RegisterDate;
     }
+	function getPaidDate()
+	{
+		return $this->mPaidDate;
+	}
+	function getRegisteredDate()
+	{
+		return $this->mRegisteredDate;
+	}
 	function getPoints()
 	{
 		return $this->mPoints;
