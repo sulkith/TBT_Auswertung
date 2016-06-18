@@ -41,13 +41,13 @@ class ArcherClassObject{
 	function setName($name)
 	{
 		sqlexecutesinglequery("
-			UPDATE archerclasses SET ClassName = '".$name."' WHERE ClassNr=".$this->mID.";
+			UPDATE archerclasses SET ClassName = '".$name."' WHERE ClassID=".$this->mID.";
 		");
 	}
 	function setComment($Comment)
 	{
 		sqlexecutesinglequery("
-			UPDATE archerclasses SET ClassComment = '".$Comment."' WHERE ClassNr=".$this->mID.";
+			UPDATE archerclasses SET ClassComment = '".$Comment."' WHERE ClassID=".$this->mID.";
 		");
 	}
 
@@ -68,17 +68,8 @@ function getArcherClassName($id)
 		return -1;
 	return $ClassObj->ClassName;
 }
-function addArcherClassesToSelectField($select){
-	$query = "SELECT ClassID, ClassName FROM archerclasses;";
-	$erg = sqlexecutesinglequery($query);
-	while($ClassObj = mysql_fetch_object($erg))
-	{
-		if($ClassObj->ClassID == $select)
-			echo "<option selected value=".$ClassObj->ClassID.">".$ClassObj->ClassName."</option>\n";
-		else
-			echo "<option value=".$ClassObj->ClassID.">".$ClassObj->ClassName."</option>\n";
-	}
-}
+
+
 function checkArcherClassExists($id)
 {
 	$query = "SELECT * FROM archerclasses WHERE ClassID='".$id."';";
@@ -87,11 +78,17 @@ function checkArcherClassExists($id)
 		return true;
 	return false;
 }
-function deleteArcherClass($id)
+function checkArcherClassUsed($id)
 {
 	$query = "SELECT * FROM participation WHERE ArcherClassID='".$id."';";
 	$erg = sqlexecutesinglequery($query);
 	if(($userobj = mysql_fetch_object($erg)))
+		return true;
+	return false;
+}
+function deleteArcherClass($id)
+{
+	if(checkArcherClassUsed($id))
 		return -1;
 	sqlexecutesinglequery("DELETE FROM archerclasses WHERE ClassID=".$id.";");
 	return 1;
@@ -102,6 +99,11 @@ function AddArcherClass($name, $comment)
 	sqlexecutesinglequery("
 	INSERT INTO `archerclasses` (`ClassID`, `ClassName`, `ClassComment`) VALUES (NULL, '".$name."', '".$comment."');
 	");
+}
+function getArcherClasses($formatter)
+{
+	$query = "SELECT * FROM ArcherClasses;";
+	return getFormattedResult($query,$formatter);
 }
 
 ?>

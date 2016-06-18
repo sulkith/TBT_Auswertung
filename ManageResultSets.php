@@ -1,6 +1,8 @@
 <?php
 	include("resource/referrer.php");
 	include("projectspecific/result.php");
+	include_once("formatter/ResultSetElementList.php");
+	include_once("formatter/ResultSetTable.php");
 	
 	setReferrer("ManageResultSets.php");#TODO
 	$title = "Ergbnislisten bearbeiten"; #TODO
@@ -26,7 +28,7 @@
 	<h2>Ergebnislisten</h2>
 <table border=1>
 	<!--<th><td>Listenname</td><td>Inhalt</td><td>bearbeiten</td><td>entfernen</td></th>-->
-	<?php getResultSetTable();?>
+	<?php echo getResultSets(new ResultSetTableFormatter(new ResultSetElementListFormatter));?>
 </table>
 </ul>
 <form action="ManageResultSets.php" method="post">
@@ -36,8 +38,6 @@ Ergebnislistenname: <input type="text" name="rsname" />
 </form>
 <br>
 <h2>in keiner Ergebnisliste enthaltene Kombinationen</h2>
-<ul>
-<?php getUnusedResultSetElementList();?>
-</ul>
+<?php echo getUnusedResultSetElements(new ResultSetElementListFormatter());?>
 <!-- Insert Content here -->
 <?php include_once("projectspecific/template_foot.php");?>

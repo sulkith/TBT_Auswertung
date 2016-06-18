@@ -1,7 +1,7 @@
 <?php 
-include("resource/sqldb.php");
-include("projectspecific/ArcherClass.php");
-include("projectspecific/BowClass.php");
+include_once("resource/sqldb.php");
+include_once("projectspecific/ArcherClass.php");
+include_once("projectspecific/BowClass.php");
 class ResultSetObject{
 	private $mID;
 	private $mName;
@@ -89,23 +89,12 @@ function checkResultSetElementHasArcher($aclass,$bclass)
 	return false;
 
 }
-function getUnusedResultSetElementList()
-{
-	$erg = sqlexecutesinglequery("SELECT archerclasses.ClassID AS aclass, archerclasses.ClassName AS aname , 
-	bowclasses.ClassNr AS bclass, bowclasses.ClassName AS bname FROM bowclasses, archerclasses;");
-	while($pObj = mysql_fetch_object($erg))
-	{
-		if(!checkResultSetElementContentExists($pObj->aclass, $pObj->bclass))
-		{
-			echo "<li>".$pObj->aname." AND ".$pObj->bname."</li>";
-		}
-	}
-}
+
 function getUnusedResultSetElementListString()
 {
 	$s = "";
 	$erg = sqlexecutesinglequery("SELECT archerclasses.ClassID AS aclass, archerclasses.ClassName AS aname , 
-	bowclasses.ClassNr AS bclass, bowclasses.ClassName AS bname FROM bowclasses, archerclasses;");
+	bowclasses.ClassID AS bclass, bowclasses.ClassName AS bname FROM bowclasses, archerclasses;");
 	while($pObj = mysql_fetch_object($erg))
 	{
 		if(!checkResultSetElementContentExists($pObj->aclass, $pObj->bclass))
@@ -115,104 +104,8 @@ function getUnusedResultSetElementListString()
 	}
 	return $s;
 }
-function getUnusedResultSetElementListWithActiveArchersString()
-{
-	$s = "";
-	$erg = sqlexecutesinglequery("SELECT archerclasses.ClassID AS aclass, archerclasses.ClassName AS aname , 
-	bowclasses.ClassNr AS bclass, bowclasses.ClassName AS bname FROM bowclasses, archerclasses;");
-	while($pObj = mysql_fetch_object($erg))
-	{
-		if(!checkResultSetElementContentExists($pObj->aclass, $pObj->bclass))
-		{
-			if(checkResultSetElementHasArcher($pObj->aclass, $pObj->bclass))
-			{	
-				$s .= "<li>".$pObj->aname." AND ".$pObj->bname."</li>";
-			}
-		}
-	}
-	return $s;
-}
-function getResultSet($id)
-{
-	$query = "SELECT * FROM participation, ResultSetElement 
-	WHERE Points!=-1 AND Points !=-2 AND 
-	ResultSetElement.BowClassID = participation.BowClassID AND
-	ResultSetElement.ArcherClassID = participation.ArcherClassID AND
-	ResultSetElement.ResultSetID=".$id."
-	ORDER BY StartNr, Kills, Points;";
-	$erg = sqlexecutesinglequery($query);
-	#TODO add Link to modify user
-	$rank = 1;
-	while($pObj = mysql_fetch_object($erg))
-	{
-		formatTableLineForResult($rank,$pObj->StartNr,$pObj->FirstName,$pObj->LastName,
-		$pObj->Club,$pObj->BowClassID,$pObj->ArcherClassID,$pObj->Points,$pObj->Kills,$pObj->GroupNr);
-		$rank++;
-	}
-}
-function getCompleteResult()
-{
-	$query = "SELECT * FROM participation WHERE Points!=-1 AND Points !=-2 ORDER BY StartNr, Kills, Points;";
-	$erg = sqlexecutesinglequery($query);
-	#TODO add Link to modify user
-	$rank = 1;
-	while($pObj = mysql_fetch_object($erg))
-	{
-		formatTableLineForResult($rank,$pObj->StartNr,$pObj->FirstName,$pObj->LastName,
-		$pObj->Club,$pObj->BowClassID,$pObj->ArcherClassID,$pObj->Points,$pObj->Kills,$pObj->GroupNr);
-		$rank++;
-	}
-	$query = "SELECT * FROM participation WHERE Points=-1 OR Points =-2 ORDER BY StartNr ;";
-	$erg = sqlexecutesinglequery($query);
-	#TODO add Link to modify user
-	$rank = "-";
-	while($pObj = mysql_fetch_object($erg))
-	{
-		formatTableLineForResult($rank,$pObj->StartNr,$pObj->FirstName,$pObj->LastName,
-		$pObj->Club,$pObj->BowClassID,$pObj->ArcherClassID,$pObj->Points,$pObj->Kills,$pObj->GroupNr);
-	}
-}
-function getResultColspan()
-{
-	echo "<colgroup>
-	<col width=1*>
-	<col width=1*>
-	<col width=6*>
-	<col width=6*>
-	<col width=2*>
-	<col width=2*>
-	<col width=10*>
-	<col width=2*>
-	<col width=2*>
-	<col width=2*>
-	</colgroup>";
-	
-}
-function formatTableLineForResult($rank, $StartNr, $firstName, $lastName, $club, $bclass, $aclass, $points, $kills, $group)
-{
-	echo "<tr>".
-	"<td>".$rank."</td>".
-	"<td>".$StartNr."</td>".
-	"<td>".$firstName."</td>".
-	"<td>".$lastName."</td>".
-	"<td>".getArcherClassName($aclass)."</td>".
-	"<td>".getBowClassName($bclass)."</td>".
-	"<td>".$club."</td>";
-	$pointstext = $points;
-	if($points==-1)$pointstext="-";
-	if($points==-2)$pointstext="-";
-	$killstext = $kills;
-	if($kills==-1)$killstext="-";
-	$groupName = $group;
-	if($group == -1)$groupName="-";
-	if($group == -2)$groupName="-";
-	echo "<td>".$pointstext."</td>".
-	"<td>".$killstext."</td>".
-	"<td>".$groupName."</td>".
-	"</tr>";
-	
-	
-}
+
+
 function checkResultSetElementContentExists($aclass,$bclass)
 {
 	$query = "SELECT * FROM resultsetelement WHERE BowClassID=".$bclass." AND ArcherClassID=".$aclass.";";
@@ -222,32 +115,8 @@ function checkResultSetElementContentExists($aclass,$bclass)
 	return false;
 
 }
-function getResultSetElementsOption($id)
-{
-	$query = "SELECT resultSetElementID, ResultSetID, BowClassID, ArcherClassID FROM ResultSetElement WHERE ResultSetID=".$id.";";
-	$erg = sqlexecutesinglequery($query);
-	#TODO add Link to modify user
-	while($pObj = mysql_fetch_object($erg))
-	{
-		echo "<option value='".$pObj->resultSetElementID."'>".
-		getArcherClassName($pObj->ArcherClassID)." AND ".getBowClassName($pObj->BowClassID).
-		"</option>";
-	}
-}
-function getResultSetElementsList($id)
-{
-	$query = "SELECT resultSetElementID, ResultSetID, BowClassID, ArcherClassID FROM ResultSetElement WHERE ResultSetID=".$id.";";
-	$erg = sqlexecutesinglequery($query);
-	#TODO add Link to modify user
-	echo "<ul>";
-	while($pObj = mysql_fetch_object($erg))
-	{
-		echo "<li>".
-		getArcherClassName($pObj->ArcherClassID)." AND ".getBowClassName($pObj->BowClassID).
-		"</li>";
-	}
-	echo "</ul>";
-}
+
+
 function getResultSetList()
 {
 	$query = "SELECT ResultSetID, ResultSetName FROM ResultSets;";
@@ -259,39 +128,91 @@ function getResultSetList()
 		$pObj->ResultSetName."</a></li>\n";
 	}
 }
-function getResultSetTable()
+
+
+
+###############################################################
+#  Formatter based Outputs
+###############################################################
+function getResultSet($id, $formatter)
+{
+	$query = "SELECT * FROM participation, ResultSetElement 
+	WHERE Points!=-1 AND Points !=-2 AND 
+	ResultSetElement.BowClassID = participation.BowClassID AND
+	ResultSetElement.ArcherClassID = participation.ArcherClassID AND
+	ResultSetElement.ResultSetID=".$id."
+	ORDER BY StartNr, Kills, Points;";
+	$formatter->setRank("1");
+	$string = getFormattedResult($query,$formatter);
+	return $string;
+}
+
+function getCompleteResult($formatter)
+{
+	$s = $formatter->getHead();
+	$formatter->setRank("1");
+	$s .= getFormattedResultWithoutHead("SELECT * FROM participation WHERE Points!=-1 AND Points !=-2 ORDER BY StartNr, Kills, Points;",$formatter);
+	$formatter->setRank("-");
+	$s .= getFormattedResultWithoutHead("SELECT * FROM participation WHERE Points=-1 OR Points =-2 ORDER BY StartNr;",$formatter);
+	$s .= $formatter->getFoot();
+	return $s;
+}
+function getUnusedResultSetElements($formatter)
+{
+	#This function is a bit complicated because of the checking if the Class is active!
+	$s = $formatter->getHead();
+	$erg = sqlexecutesinglequery("SELECT archerclasses.ClassID AS aclass, archerclasses.ClassName AS aname , 
+	bowclasses.ClassID AS bclass, bowclasses.ClassName AS bname FROM bowclasses, archerclasses;");
+	while($pObj = mysql_fetch_object($erg))
+	{
+		if(!checkResultSetElementContentExists($pObj->aclass, $pObj->bclass))
+		{
+			$s .= $formatter->format($pObj);
+		}
+	}
+	$s .= $formatter->getFoot();
+	return $s;
+}
+function getCompleteResultSets($formatter)
 {
 	$query = "SELECT ResultSetID, ResultSetName FROM ResultSets;";
 	$erg = sqlexecutesinglequery($query);
 	#TODO add Link to modify user
+	$s = "";
 	while($pObj = mysql_fetch_object($erg))
 	{
-		echo "<tr><td>".$pObj->ResultSetName."</td><td>";
-		echo getResultSetElementsList($pObj->ResultSetID)."</td>";
-		echo"<td><a href=\"ManageResultSetElements.php?rsid=".
-		$pObj->ResultSetID."\">bearbeiten</a></td>
-		<td><a href=\"ManageResultSets.php?remove=".
-		$pObj->ResultSetID."\">entfernen</a></td></tr>";
+		$s .= "<h1>".$pObj->ResultSetName."</h1>";
+		$s .= getResultSet($pObj->ResultSetID,$formatter); 
 	}
+	return $s;
 }
-function getCompleteResultSets($tableHead, $tableFoot)
+function getUnusedResultSetElementListWithActiveArchers($formatter)
+{
+	#This function is a bit complicated because of the checking if the Class is active!
+	$s = $formatter->getHead();
+	$erg = sqlexecutesinglequery("SELECT archerclasses.ClassID AS aclass, archerclasses.ClassName AS aname , 
+	bowclasses.ClassID AS bclass, bowclasses.ClassName AS bname FROM bowclasses, archerclasses;");
+	while($pObj = mysql_fetch_object($erg))
+	{
+		if(!checkResultSetElementContentExists($pObj->aclass, $pObj->bclass))
+		{
+			if(checkResultSetElementHasArcher($pObj->aclass, $pObj->bclass))
+			{	
+				$s .= $formatter->format($pObj);
+			}
+		}
+	}
+	$s .= $formatter->getFoot();
+	return $s;
+}
+function getResultSetElements($id,$formatter)
+{
+	$query = "SELECT resultSetElementID, ResultSetID, BowClassID, ArcherClassID FROM ResultSetElement WHERE ResultSetID=".$id.";";
+	return getFormattedResult($query,$formatter);
+}
+function getResultSets($formatter)
 {
 	$query = "SELECT ResultSetID, ResultSetName FROM ResultSets;";
-	$erg = sqlexecutesinglequery($query);
-	#TODO add Link to modify user
-	while($pObj = mysql_fetch_object($erg))
-	{
-		echo "<h1>".$pObj->ResultSetName."</h1>";
-		echo $tableHead;
-		getResultColspan();
-		getResultSet($pObj->ResultSetID); 
-		echo $tableFoot;	
-	}
+	return getFormattedResult($query,$formatter);
 }
-
-#SELECT DISTINCT archerclasses.ClassID, bowclasses.ClassNr FROM bowclasses, archerclasses, resultsetelement WHERE (resultsetelement.ArcherClassID!=archerclasses.ClassID AND resultsetelement.BowClassID!=bowclasses.ClassNr)
-
-
-
-
 ?>

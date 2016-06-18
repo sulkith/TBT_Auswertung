@@ -1,7 +1,8 @@
 <?php
-	include("projectspecific/ArcherClass.php");
-	include("projectspecific/BowClass.php");
-	include("projectspecific/Participation.php");
+	include_once("projectspecific/ArcherClass.php");
+	include_once("projectspecific/BowClass.php");
+	include_once("projectspecific/Participation.php");
+	include_once("formatter/ClassOption.php");
 	include("resource/referrer.php");
 	if(isset($_POST['action']))
 	if($_POST['action']=="Eintragen")
@@ -54,18 +55,18 @@
 <tr><td>Vorname:</td><td><input type="text" name="name" value="<?php if(isset($name))echo $name; ?>" /></td></tr>
 <tr><td>Nachname</td><td><input type="text" name="lastname" value="<?php if(isset($lastname))echo $lastname; ?>"/></td></tr>
 <tr><td>Verein</td><td><input type="text" name="club" value="<?php if(isset($club))echo $club; ?>"/></td></tr>
-<tr><td>Bogenklasse</td><td><select name='BowClassSelect' size='1' style="width:100%">
+<tr><td>Bogenklasse</td><td>
 					<?php
-						//Print users
-						addBowClassesToSelectField($bclass);
+						$formatter = new ClassOptionFormatter("<select name='BowClassSelect' size='1' style=\"width:100%\">");
+						echo getBowClasses($formatter);
 					?>
-				</select></td></tr>
-<tr><td>Sch&uuml;tzenklasse</td><td><select name='ArcherClassSelect' size='1' style="width:100%">
-					<?php
-						//Print users
-						addArcherClassesToSelectField($aclass);
-					?>
-				</select></td></tr>
+				</td></tr>
+<tr><td>Sch&uuml;tzenklasse</td><td>
+				<?php
+					$formatter = new ClassOptionFormatter("<select name='ArcherClassSelect' size='1' style=\"width:100%\">");
+					echo getArcherClasses($formatter);
+				?>
+				</td></tr>
 <tr><td>Veggie</td><td><select name='Veggie' size='1' style="width:100%">
 <?php
 if($veg == 1)

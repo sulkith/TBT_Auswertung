@@ -1,5 +1,4 @@
 <?php
-
 function sqlopenhandle(){
 	include ("settings/settings.php");
 	$chandle = mysql_connect($sqlhost, $sqldbuser, $sqldbpass) 
@@ -47,5 +46,25 @@ function sqlescape($string){
 	include ("settings/settings.php");
 	return addslashes($string);
 }
-
+function getFormattedResult($query,$formatter)
+{
+	$resultString = $formatter->getHead();
+	$erg = sqlexecutesinglequery($query);
+	while($pObj = mysql_fetch_object($erg))
+	{
+		$resultString .= $formatter->format($pObj);
+	}
+	$resultString .= $formatter->getFoot();
+	return $resultString;
+}
+function getFormattedResultWithoutHead($query,$formatter)
+{
+	$resultString = "";
+	$erg = sqlexecutesinglequery($query);
+	while($pObj = mysql_fetch_object($erg))
+	{
+		$resultString .= $formatter->format($pObj);
+	}
+	return $resultString;
+}
 ?>

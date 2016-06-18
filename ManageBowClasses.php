@@ -1,17 +1,22 @@
 <?php
 	include("projectspecific/BowClass.php");
-	include_once 'resource/referrer.php';
-	
+	include_once('resource/referrer.php');
+	include_once("formatter/ClassOption.php");
+	include_once("formatter/ParticipationList.php");
+	setReferrer("ManageBowClasses.php");
+	if(isset($_GET['del']))
+	{
+		$bcid = $_GET['del'];
+		if(checkBowClassUsed($bcid) == true)
+		{
+			#todo show error with link
+			$info = "Bogenklasse wird noch verwendet:";
+			$info .= getParticipatorsWithBowClass($bcid,new ParticipationListFormatter());
+			setReferrer("ManageBowClasses.php?del=".$bcid);
+		}
+	}
 	
 	if(isset($_POST['action'])){
-		if($_POST['action']=="Informationen anzeigen"){
-			if(!$BowClassSelect=$_POST['BowClassSelect'])
-				$info = "Keine Bogenklasse ausgewählt";
-			else{
-				$bcid=$BowClassSelect;
-				header('Location: BowClassDetails.php?bcid='.$bcid.'');
-			}
-		}
 		if($_POST['action']=="Klasse Loeschen"){
 			if(!$BowClassSelect=$_POST['BowClassSelect'])
 				$info = "Keine Bogenklasse ausgewählt";
@@ -19,8 +24,9 @@
 				$bcid=$BowClassSelect;
 				if(deleteBowClass($bcid) == -1)
 				{
-					#todo show error with link
-					header('Location: BowClassDetails.php?bcid='.$bcid.'');
+					$info = "Bogenklasse wird noch verwendet:";
+					$info .= getParticipatorsWithBowClass($bcid,new ParticipationListFormatter());
+					setReferrer("ManageBowClasses.php?del=".$bcid);
 				}
 				else
 					$info = "Bogenklasse gel&ouml;scht";
@@ -33,8 +39,9 @@
 				$info .= "Kein Klassenname eingegeben<br>";
 				echo $info;
 			}
-			if (($CComment = $_POST['CComment']) == "")
-				$info .= "Kein Kommentar eingegeben<br>";
+			#Comment is not neccessary --> displayed nowhere!
+			#if (($CComment = $_POST['CComment']) == "")
+			#	$info .= "Kein Kommentar eingegeben<br>";
 			
 			if($info == ""){
 				AddBowClass($CName,$CComment);
@@ -44,7 +51,6 @@
 		
 	}
 	
-	setReferrer("ManageBowClasses.php");
 	$title = "Bogenklassen Management";
 	include_once("projectspecific/template_head.php");
 ?>
@@ -56,16 +62,13 @@
 	<div class="BodySmall">
 		<div class="UserModLeft">
 			<div style="height:50%; width:250px;">
-				<select name='BowClassSelect' size='20' style="width:100%; height:100%;">
 					<?php
-						//Print users
-						addBowClassesToSelectField(-1);
+						$formatter = new ClassOptionFormatter("<select name='BowClassSelect' size='20' style=\"width:100%\">");
+						echo getBowClasses($formatter);
 					?>
-				</select>
 			</div>
 			<div style="height:50%; width:700px; left:250px; top:0px;">
 				<input type=submit name="action" value='Klasse Loeschen'/>
-				<input type=submit name="action" value='Informationen anzeigen' />
 				<table>
 					<tr><td>Klassen Name:</td><td><input type=text name="CName" value="<?php if(isset($CName))echo $CName; ?>"/></td><td></td></tr>
 					<tr><td>Kommentar</td><td><input type=text name="CComment" value="<?php if(isset($CComment))echo $CComment; ?>"/></td><tr>

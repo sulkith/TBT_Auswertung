@@ -1,6 +1,9 @@
 <?php
 	include("resource/referrer.php");
-	include("projectspecific/Participation.php");
+	include_once("projectspecific/Participation.php");
+	include_once("formatter/ParticipationList.php");
+	
+	$formatter = new ParticipationListFormatter();
 	
 	setReferrer("AlphabeticalParticipation.php");
 	$title = "Ergebniserfassung";
@@ -15,21 +18,15 @@
 <tr>
 <td style="vertical-align:top">
 <b>Alle Sch&uuml;tzen ohne Ergebnis</b>
-<ul>
-<?php addParticipatorsToEnumerateSortedNoPoints();?>
-</ul>
+<?php echo getParticipatorsNoPoints($formatter);?>
 </td>
 <td style="vertical-align:top">
 <b>Alle Sch&uuml;tzen ohne Wertung</b>
-<ul>
-<?php addParticipatorsToEnumerateSortedNoResult();?>
-</ul>
+<?php echo getParticipatorsNoResult($formatter);?>
 </td>
 <td style="vertical-align:top">
 <b>Alle Sch&uuml;tzen</b>
-<ul>
-<?php addAllParticipatorsToEnumerateSorted();?>
-</ul>
+<?php echo getAllParticipators($formatter);?>
 </td>
 </tr>
 </table>

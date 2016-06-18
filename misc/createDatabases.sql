@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `archerclasses` (
 --
 
 CREATE TABLE IF NOT EXISTS `bowclasses` (
-  `ClassNr` int(11) NOT NULL,
+  `ClassID` int(11) NOT NULL,
   `ClassName` varchar(10) NOT NULL,
   `ClassComment` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -105,7 +105,7 @@ ALTER TABLE `archerclasses`
 -- Indizes für die Tabelle `bowclasses`
 --
 ALTER TABLE `bowclasses`
-  ADD PRIMARY KEY (`ClassNr`);
+  ADD PRIMARY KEY (`ClassID`);
 
 --
 -- Indizes für die Tabelle `participation`
@@ -138,7 +138,7 @@ ALTER TABLE `archerclasses`
 -- AUTO_INCREMENT für Tabelle `bowclasses`
 --
 ALTER TABLE `bowclasses`
-  MODIFY `ClassNr` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ClassID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT für Tabelle `participation`
 --

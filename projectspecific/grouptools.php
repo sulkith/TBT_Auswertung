@@ -1,7 +1,9 @@
 <?php
 include("participation.php");
+include_once("formatter/ParticipationList.php");
 function createGroupTable($x,$y)
 {
+	$formatter = new ParticipationListFormatter();
 	$i=1;
 	echo ' <table border="1" width="100%"><colgroup>';
 	for($xi = 0; $xi<$x;$xi++)
@@ -15,16 +17,16 @@ function createGroupTable($x,$y)
 		{
 			$group = $yi * $x + $xi + 1;
 			echo "<td><b>Gruppe ".$group."</b><br><ul>";
-			addUsersToGroupEnumerate($group);
+			echo getParticipationsForGroup($group,$formatter);
 			#todo Print Group Members
 			echo "</ul></td>";
 		}
 		echo "</tr>";
 	}
 	echo "<tr><td> unzugeordnete Teilnehmer<br><ul>";
-	addUsersToGroupEnumerate(0);
+	echo getParticipationsForGroup(0,$formatter);
 	echo "</ul></td><td>nicht erschienene Teinehmer<br><ul>";
-	addUsersToGroupEnumerate(-1);
+	echo getParticipationsForGroup(-1,$formatter);
 	echo "</ul></td></tr>";
 	echo "</table>";	
 }

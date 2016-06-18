@@ -2,6 +2,7 @@
 	include("projectspecific/participation.php");
 	include("projectspecific/ArcherClass.php");
 	include("projectspecific/BowClass.php");
+	include_once("formatter/ClassOption.php");
 	include_once("resource/referrer.php");
 	$info = "";
 	$error = "";
@@ -164,32 +165,25 @@
 	<table>
 <tr><td>Punkte</td><td><input type="text" name="points" value="<?php if($points != -1)echo $points; ?>" /></td><td>-2: Kein Ergebnis abgegeben</td></tr>
 <tr><td>Kills</td><td><input type="text" name="kills" value="<?php if($kills != -1)echo $kills; ?>"/></td></tr>
-<tr><td>Bogenklasse</td><td><select name='BowClassSelect' size='1' style="width:100%">
+<tr><td>Bogenklasse</td><td>
 					<?php
-						if($finished == false)
-						{
-							echo "<option value=-1 selected>Bitte Ausw&auml;hlen</option>";
-							addBowClassesToSelectField(-1);
-						}
+						$formatter = new ClassOptionFormatter("<select name='BowClassSelect' size='1' style=\"width:100%\">");
+						if($finished == true)
+							$formatter->setSelected($bclass);
 						else
-						{
-							addBowClassesToSelectField($bclass);
-						}
+							$formatter->setAdditionalElements("<option value=-1 selected>Bitte Ausw&auml;hlen</option>");
+						echo getBowClasses($formatter);
 					?>
-				</select></td></tr>
-<tr><td>Sch&uuml;tzenklasse</td><td><select name='ArcherClassSelect' size='1' style="width:100%">
+				</td></tr>
+<tr><td>Sch&uuml;tzenklasse</td><td>
 					<?php
-						if($finished == false)
-						{
-							echo "<option value=-1 selected>Bitte Ausw&auml;hlen</option>";
-							addArcherClassesToSelectField(-1);
-						}
+						$formatter = new ClassOptionFormatter("<select name='ArcherClassSelect' size='1' style=\"width:100%\">");
+						if($finished == true)
+							$formatter->setSelected($aclass);
 						else
-						{
-							addArcherClassesToSelectField($aclass);
-						}
-					?>
-				</select></td></tr>
+							$formatter->setAdditionalElements("<option value=-1 selected>Bitte Ausw&auml;hlen</option>");
+						echo getArcherClasses($formatter);
+					?></td></tr>
 <tr><td>Gruppe</td><td><input type="text" name="group" value="<?php echo $group; ?>"/></td><td>0: noch nicht zugewiesen &nbsp;&nbsp;&nbsp;&nbsp; -1: nicht erschienen</td></tr>
 </table>
 	<h2>Teilnehmerdaten</h2>

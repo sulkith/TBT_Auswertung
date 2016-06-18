@@ -1,24 +1,27 @@
 <?php
-	include("resource/referrer.php");
-	include("projectspecific/result.php");
-	include("projectspecific/participation.php");
+	include_once("resource/referrer.php");
+	include_once("resource/sqldb.php");
+	include_once("formatter/ParticipationResultTable.php");
+	include_once("formatter/ParticipationList.php");
+	include_once("formatter/ResultSetElementList.php");
+	include_once("projectspecific/result.php");
+	include_once("projectspecific/participation.php");
 	
-	#setReferrer("showResult.php");#TODO
 	$info = "";
+	$tableFormatter = new ParticipationResultTableFormatter();
 	if(!isset($_POST['action']) || $_POST['action'] != 'Ausblenden')
 	{
-		$unusedClasses = getUnusedResultSetElementListWithActiveArchersString();
+		$unusedClasses = getUnusedResultSetElementListWithActiveArchers(new ResultSetElementListFormatter());
 		if($unusedClasses != "")
 		{
-			$info .= "<b>ACHTUNG in keiner Ergebnisliste enthaltene Kombinationen aus Bogen- und Sch&uuml;tzenklasse</b><ul>".
-			$unusedClasses."</ul><br>";
+			$info .= "<b>ACHTUNG in keiner Ergebnisliste enthaltene Kombinationen aus Bogen- und Sch&uuml;tzenklasse, f&uuml;r die Teilnehmer gemeldet sind</b>".
+			$unusedClasses."<a href=\"ManageResultSets.php\">Ergebnislisten verwalten</a><br><br>";
 		}
-
-		$missingparticipations = getMissingParticipatorsToEnumerateSorted();
+		$missingparticipations = getMissingParticipators(new ParticipationListFormatter());
 		if($unusedClasses != "")
 		{
-			$info .= "<b>ACHTUNG bisher keine Punktzahl erfasst</b><ul>".
-			$missingparticipations."</ul><br>";
+			$info .= "<b>ACHTUNG bisher keine Punktzahl erfasst</b>".
+			$missingparticipations."<br>";
 		}
 
 		if($info != "")
@@ -29,21 +32,8 @@
 	$title = "Ergebnisliste"; #TODO
 	$dialog = 1;
 	include_once("projectspecific/template_head.php");
-
-	$thead = "<table border=1 width=100%><thead><tr>
-      <th>Platz</th>
-      <th>StartNr</th>
-      <th>Vorname</th>
-	  <th>Nachname</th>
-	  <th>Sch&uuml;tzenklasse</th>
-	  <th>Bogenklasse</th>
-	  <th>Verein</th>
-	  <th>Punkte</th>
-	  <th>Kills</th>
-	  <th>Gruppe</th>
-    </tr></thead>";
-	$tfoot = "</table>";
-	getCompleteResultSets($thead, $tfoot);
+	
+	echo getCompleteResultSets($tableFormatter);
 ?>
 <!-- Insert Content here -->
 <?php include_once("projectspecific/template_foot.php");?>

@@ -1,6 +1,9 @@
 <?php
 	include("resource/referrer.php");
 	include("projectspecific/result.php");
+	include_once("formatter/ResultSetElementList.php");
+	include_once("formatter/ResultSetElementOption.php");
+	include_once("formatter/ClassOption.php");
 	
 	$info = "";
 	$error = "";
@@ -62,31 +65,30 @@
 	</div>
 <form action="ManageResultSetElements.php" method="post">
 <input type=hidden name='rsid' value="<?php echo $rsid?>">
-<select name='ResultSetElement' size='10' style="width:250px">
-<?php getResultSetElementsOption($rsid) ?>
-</select><br>
-<input type="submit" name="action" value='Entfernen' /><br>
+<?php echo getResultSetElements($rsid,new ResultSetElementOptionFormatter("<select name='ResultSetElement' size='10' style='width:250px'>"));?>
+<br>
+<input type="submit" name="action" value='Entfernen' />
 <table>
-<tr><td>Bogenklasse</td><td><select name='BowClassSelect' size='1' style="width:100%">
+<tr><td>Bogenklasse</td><td>
 					<?php
-						//Print users
-						addBowClassesToSelectField($bclass);
+						$formatter = new ClassOptionFormatter("<select name='BowClassSelect' size='1' style=\"width:100%\">");
+						if(isset($bclass))$formatter->setSelected($bclass);
+						echo getBowClasses($formatter);
 					?>
-				</select></td></tr>
-<tr><td>Sch&uuml;tzenklasse</td><td><select name='ArcherClassSelect' size='1' style="width:100%">
+				</td></tr>
+<tr><td>Sch&uuml;tzenklasse</td><td>
 					<?php
-						//Print users
-						addArcherClassesToSelectField($aclass);
+						$formatter = new ClassOptionFormatter("<select name='ArcherClassSelect' size='1' style=\"width:100%\">");
+						if(isset($aclass))$formatter->setSelected($aclass);
+						echo getArcherClasses($formatter);
 					?>
-				</select></td></tr>
+</td></tr>
 </table>
 <input type="submit" name="action" value='Hinzufuegen' />
 </form>
 <br>
 <h2>in keiner Ergebnisliste enthaltene Kombinationen</h2>
 <?php #TODO make links to add the combination via _GET?>
-<ul>
-<?php getUnusedResultSetElementList();?>
-</ul>
+<?php echo getUnusedResultSetElements(new ResultSetElementListFormatter());?>
 <!-- Insert Content here -->
 <?php include_once("projectspecific/template_foot.php");?>

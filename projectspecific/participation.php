@@ -204,98 +204,9 @@ function getUserNameForUid($uid){
 		return null;
 }
 
-
-function addUngroupedUsersToSelectField(){
-	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE GroupNr = 0;";
-	$erg = sqlexecutesinglequery($query);
-	while($pObj = mysql_fetch_object($erg))
-	{
-		echo "<option value=".$pObj->StartNr.">".$pObj->LastName." ".$pObj->FirstName."</option>\n";
-	}
-}
-
-function addAllUsersToSelectField(){
-	$query = "SELECT StartNr, FirstName, LastName FROM participation;";
-	$erg = sqlexecutesinglequery($query);
-	while($pObj = mysql_fetch_object($erg))
-	{
-		echo "<option value=".$pObj->StartNr.">".$pObj->LastName." ".$pObj->FirstName."</option>\n";
-	}
-}
-function addUsersToGroupEnumerate($groupID){
-	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE GroupNr = '".$groupID."';";
-	$erg = sqlexecutesinglequery($query);
-	#TODO add Link to modify user
-	while($pObj = mysql_fetch_object($erg))
-	{
-		echo "<li><a href=\"ModifyParticipation.php?pid=".$pObj->StartNr."\">".
-		formatParticipationName($pObj->StartNr)."</a></li>\n";
-	}
-}
-function addAllParticipatorsToEnumerateSorted()
-{
-	$query = "SELECT StartNr, FirstName, LastName FROM participation ORDER BY LastName,FirstName;";
-	$erg = sqlexecutesinglequery($query);
-	#TODO add Link to modify user
-	while($pObj = mysql_fetch_object($erg))
-	{
-		echo "<li><a href=\"ModifyParticipation.php?pid=".$pObj->StartNr."\">".
-		formatParticipationName($pObj->StartNr)."</a></li>\n";
-	}
-}
-function addParticipatorsToEnumerateSortedNoPoints()
-{
-	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE Points=-1 AND GroupNr != -1 ORDER BY LastName,FirstName;";
-	$erg = sqlexecutesinglequery($query);
-	#TODO add Link to modify user
-	while($pObj = mysql_fetch_object($erg))
-	{
-		echo "<li><a href=\"ModifyParticipation.php?pid=".$pObj->StartNr."\">".
-		formatParticipationName($pObj->StartNr)."</a></li>\n";
-	}
-}
-function addParticipatorsToEnumerateSortedNoResult()
-{
-	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE Points=-2 OR GroupNr = -1 ORDER BY LastName,FirstName;";
-	$erg = sqlexecutesinglequery($query);
-	#TODO add Link to modify user
-	while($pObj = mysql_fetch_object($erg))
-	{
-		echo "<li><a href=\"ModifyParticipation.php?pid=".$pObj->StartNr."\">".
-		formatParticipationName($pObj->StartNr)."</a></li>\n";
-	}
-}
-function getMissingParticipatorsToEnumerateSorted()
-{
-	$s = "";
-	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE Points=-1 ORDER BY LastName,FirstName;";
-	$erg = sqlexecutesinglequery($query);
-	#TODO add Link to modify user
-	while($pObj = mysql_fetch_object($erg))
-	{
-		$s .= "<li><a href=\"ModifyParticipation.php?pid=".$pObj->StartNr."\">".
-		formatParticipationName($pObj->StartNr)."</a></li>\n";
-	}
-	return $s;
-}
-function formatParticipationName($pid)
-{
-	$pObj = new participationObject($pid);
-	$points = $pObj->getPoints();
-	$group = $pObj->getGroup();
-	if(($points == -2)||($group == -1))
-		$string = "<s>";
-	else
-		$string = "";
-	
-	$string .= " ".$pObj->getLastName()." ".$pObj->getFirstName();
-	if(($points == -2)||($group == -1))
-		$string .= "</s>";
-	else if($points != -1)
-		$string .=  " &radic;";
-	
-	return $string;
-}
+###############################################################
+#  checking functions
+###############################################################
 function checkParticipationExists($id)
 {
 	$query = "SELECT * FROM participation WHERE StartNr='".$id."';";
@@ -303,6 +214,44 @@ function checkParticipationExists($id)
 	if(($userobj = mysql_fetch_object($erg)))
 		return true;
 	return false;
+}
+
+###############################################################
+#  Formatter based Outputs
+###############################################################
+function getParticipationsForGroup($groupID, $formatter){
+	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE GroupNr = '".$groupID."';";
+	return getFormattedResult($query,$formatter);
+}
+function getMissingParticipators($formatter)
+{
+	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE Points=-1 ORDER BY LastName,FirstName;";
+	return getFormattedResult($query,$formatter);
+}
+function getParticipatorsNoPoints($formatter)
+{
+	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE Points=-1 AND GroupNr != -1 ORDER BY LastName,FirstName;";
+	return getFormattedResult($query,$formatter);
+}
+function getParticipatorsNoResult($formatter)
+{
+	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE Points=-2 OR GroupNr = -1 ORDER BY LastName,FirstName;";
+	return getFormattedResult($query,$formatter);
+}
+function getAllParticipators($formatter)
+{
+	$query = "SELECT StartNr, FirstName, LastName FROM participation ORDER BY LastName,FirstName;";
+	return getFormattedResult($query,$formatter);
+}
+function getParticipatorsWithBowClass($bcid, $formatter)
+{
+	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE BowClassID=".$bcid.";";
+	return getFormattedResult($query,$formatter);
+}
+function getParticipatorsWithArcherClass($acid, $formatter)
+{
+	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE ArcherClassID=".$acid.";";
+	return getFormattedResult($query,$formatter);
 }
 
 ?>

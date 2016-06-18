@@ -19,13 +19,13 @@ class BowClassObject{
     function __construct1($id)
     {    			
     	//Get data from the database
-        $query = "SELECT * FROM BowClasses WHERE ClassNr='".$id."';";
+        $query = "SELECT * FROM BowClasses WHERE ClassID='".$id."';";
 		$erg = sqlexecutesinglequery($query);
 		$classObj = mysql_fetch_object($erg);
 		if(!$classObj){
 			error("UID: ".$uid." wurde nicht gefunden");
 		}
-		$this->mUid=$classObj->ClassNr;
+		$this->mid=$classObj->ClassID;
 		$this->mName=$classObj->ClassName;
 		$this->mComment=$classObj->ClassComment;
     }
@@ -41,13 +41,13 @@ class BowClassObject{
 	function setName($name)
 	{
 		sqlexecutesinglequery("
-			UPDATE bowclasses SET ClassName = '".$name."' WHERE ClassNr=".$this->mID.";
+			UPDATE bowclasses SET ClassName = '".$name."' WHERE ClassIF=".$this->mID.";
 		");
 	}
 	function setComment($Comment)
 	{
 		sqlexecutesinglequery("
-			UPDATE bowclasses SET ClassComment = '".$Comment."' WHERE ClassNr=".$this->mID.";
+			UPDATE bowclasses SET ClassComment = '".$Comment."' WHERE ClassIF=".$this->mID.";
 		");
 	}
 
@@ -58,30 +58,28 @@ function getBCIDForBowClassName($name)
 	$erg = sqlexecutesinglequery($query);
 	if(!($ClassObj = mysql_fetch_object($erg)))
 		return -1;
-	return $ClassObj->ClassNr;
+	return $ClassObj->ClassID;
 }
 function getBowClassName($id)
 {
-	$query = "SELECT * FROM BowClasses WHERE ClassNr='".$id."';";
+	$query = "SELECT * FROM BowClasses WHERE ClassID='".$id."';";
 	$erg = sqlexecutesinglequery($query);
 	if(!($ClassObj = mysql_fetch_object($erg)))
 		return -1;
 	return $ClassObj->ClassName;
 }
-function addBowClassesToSelectField($select){
-	$query = "SELECT ClassNr, ClassName FROM BowClasses;";
-	$erg = sqlexecutesinglequery($query);
-	while($ClassObj = mysql_fetch_object($erg))
-	{
-		if($ClassObj->ClassNr == $select)
-			echo "<option selected value=".$ClassObj->ClassNr.">".$ClassObj->ClassName."</option>\n";
-		else
-			echo "<option value=".$ClassObj->ClassNr.">".$ClassObj->ClassName."</option>\n";
-	}
-}
+
 function checkBowClassExists($id)
 {
-	$query = "SELECT * FROM bowclasses WHERE ClassNr='".$id."';";
+	$query = "SELECT * FROM bowclasses WHERE ClassID='".$id."';";
+	$erg = sqlexecutesinglequery($query);
+	if(($userobj = mysql_fetch_object($erg)))
+		return true;
+	return false;
+}
+function checkBowClassUsed($id)
+{
+	$query = "SELECT * FROM participation WHERE BowClassID='".$id."';";
 	$erg = sqlexecutesinglequery($query);
 	if(($userobj = mysql_fetch_object($erg)))
 		return true;
@@ -89,19 +87,22 @@ function checkBowClassExists($id)
 }
 function deleteBowClass($id)
 {
-	$query = "SELECT * FROM participation WHERE BowClassID='".$id."';";
-	$erg = sqlexecutesinglequery($query);
-	if(($userobj = mysql_fetch_object($erg)))
+	if(checkBowClassUsed($id))
 		return -1;
-	sqlexecutesinglequery("DELETE FROM bowclasses WHERE ClassNr=".$id.";");
+	sqlexecutesinglequery("DELETE FROM bowclasses WHERE ClassID=".$id.";");
 	return 1;
 	#TODO Check if class is used. if not used delete it.
 }
 function AddBowClass($name, $comment)
 {
 	sqlexecutesinglequery("
-	INSERT INTO `tbttournament`.`bowclasses` (`ClassNr`, `ClassName`, `ClassComment`) VALUES (NULL, '".$name."', '".$comment."');
+	INSERT INTO `tbttournament`.`bowclasses` (`ClassID`, `ClassName`, `ClassComment`) VALUES (NULL, '".$name."', '".$comment."');
 	");
 }
 
+function getBowClasses($formatter)
+{
+	$query = "SELECT * FROM BowClasses;";
+	return getFormattedResult($query,$formatter);
+}
 ?>
