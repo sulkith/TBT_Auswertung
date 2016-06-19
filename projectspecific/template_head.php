@@ -17,6 +17,14 @@
 	else
 		getSmallToolbar();
 	
-	if(isset($info))getInfoBox($info);
-	if(isset($error))getInfoBox($error);
+	if(isset($errhndl))
+	{
+		echo $errhndl->getBoxes();
+	}
+	else
+	{
+		$info .= "using \$info is deprecated<br>";
+		if(isset($info))getInfoBox($info);
+		if(isset($error))getInfoBox($error);
+	}
  ?>

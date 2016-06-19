@@ -52,14 +52,7 @@ class BowClassObject{
 	}
 
 }
-function getBCIDForBowClassName($name)
-{
-	$query = "SELECT * FROM bowclasses WHERE ClassName='".$name."';";
-	$erg = sqlexecutesinglequery($query);
-	if(!($ClassObj = mysql_fetch_object($erg)))
-		return -1;
-	return $ClassObj->ClassID;
-}
+
 function getBowClassName($id)
 {
 	$query = "SELECT * FROM BowClasses WHERE ClassID='".$id."';";
@@ -95,11 +88,21 @@ function deleteBowClass($id)
 }
 function AddBowClass($name, $comment)
 {
+	if(getIDBowClassName($name) != -1)
+		return -1;
 	sqlexecutesinglequery("
 	INSERT INTO `tbttournament`.`bowclasses` (`ClassID`, `ClassName`, `ClassComment`) VALUES (NULL, '".$name."', '".$comment."');
 	");
+	return 0;
 }
-
+function getIDBowClassName($name)
+{
+	$query = "SELECT * FROM bowclasses WHERE ClassName='".$name."';";
+	$erg = sqlexecutesinglequery($query);
+	if(!($ClassObj = mysql_fetch_object($erg)))
+		return -1;
+	return $ClassObj->ClassID;
+}
 function getBowClasses($formatter)
 {
 	$query = "SELECT * FROM BowClasses;";

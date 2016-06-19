@@ -37,6 +37,15 @@
 	{
 		if($info != "")
 		{
+			echo "<div style='background-color:#00FF00; width: 100%;'>";
+			echo $info;
+			echo "</div>";
+		}
+	}
+	function getWarnBox($info)
+	{
+		if($info != "")
+		{
 			echo "<div style='background-color:yellow; width: 100%;'>";
 			echo $info;
 			echo "</div>";

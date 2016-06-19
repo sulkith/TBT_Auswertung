@@ -1,6 +1,7 @@
 <?php
 	include("projectspecific/BowClass.php");
 	include_once('resource/referrer.php');
+	include_once('resource/error.php');
 	include_once("formatter/ClassOption.php");
 	include_once("formatter/ParticipationList.php");
 	setReferrer("ManageBowClasses.php");
@@ -10,45 +11,52 @@
 		if(checkBowClassUsed($bcid) == true)
 		{
 			#todo show error with link
-			$info = "Bogenklasse wird noch verwendet:";
-			$info .= getParticipatorsWithBowClass($bcid,new ParticipationListFormatter());
+			$errhndl->setInfo("Bogenklasse ".getBowClassName($bcid)." wird noch verwendet:");
+			$errhndl->setInfo(getParticipatorsWithBowClass($bcid,new ParticipationListFormatter()));
 			setReferrer("ManageBowClasses.php?del=".$bcid);
 		}
 	}
 	
 	if(isset($_POST['action'])){
 		if($_POST['action']=="Klasse Loeschen"){
-			if(!$BowClassSelect=$_POST['BowClassSelect'])
-				$info = "Keine Bogenklasse ausgewählt";
+			if(!isset($_POST['BowClassSelect']))
+				$errhndl->setError("Keine Bogenklasse ausgewählt");
 			else{
+				$BowClassSelect=$_POST['BowClassSelect'];
 				$bcid=$BowClassSelect;
 				if(deleteBowClass($bcid) == -1)
 				{
-					$info = "Bogenklasse wird noch verwendet:";
-					$info .= getParticipatorsWithBowClass($bcid,new ParticipationListFormatter());
+					$errhndl->setError("Bogenklasse ".getBowClassName($bcid)." wird noch verwendet:");
+					$errhndl->setError(getParticipatorsWithBowClass($bcid,new ParticipationListFormatter()));
 					setReferrer("ManageBowClasses.php?del=".$bcid);
 				}
 				else
-					$info = "Bogenklasse gel&ouml;scht";
+					$errhndl->setInfo("Bogenklasse gel&ouml;scht");
 			}
 		}
 		if($_POST['action']=="Klasse anlegen"){
 			$info = "";
 			if(($CName = $_POST['CName']) == "")
 			{
-				$info .= "Kein Klassenname eingegeben<br>";
+				$errhndl->setError("Kein Klassenname eingegeben");
 				echo $info;
 			}
 			#Comment is not neccessary --> displayed nowhere!
 			#if (($CComment = $_POST['CComment']) == "")
-			#	$info .= "Kein Kommentar eingegeben<br>";
+			#	$errhndl->setError("Kein Kommentar eingegeben");
 			
 			if($info == ""){
-				AddBowClass($CName,$CComment);
+				$errorCode = AddBowClass($CName,$CComment);
+				if($errorCode == -1)
+				{
+					$errhndl->setError("Bogenklasse existiert bereits");
+				}
+				else
+				{
+					$errhndl->setInfo("Bogenklasse angelegt");
+				}
 			}
 		}
-		
-		
 	}
 	
 	$title = "Bogenklassen Management";
