@@ -20,7 +20,7 @@ class ParticipationPayTableFormatter{
 		if($pObj->PaidDate=="0000-00-00")
 		{
 			$string .= "<td>-</td>";
-			$string .= "<td><a href=\"mailto:$pObj->EmailAddress?body=Hallo $pObj->FirstName $pObj->LastName,%0D%0Dleider konnten wir noch keinen Zahlungseingang für Ihre/Deine Turnirteilnahme feststellen.%0D%0DmfG%0DTBT&subject=Turnirteilnahme TBT\">".$pObj->EmailAddress."</td>";
+			$string .= "<td><a href=\"mailto:$pObj->EmailAddress?body=Hallo $pObj->FirstName $pObj->LastName,%0D%0Dleider konnten wir noch keinen Zahlungseingang deiner Startgebühr für Ihre/Deine Turnirteilnahme feststellen.%0D%0DmfG%0DTBT&subject=Turnirteilnahme TBT\">".$pObj->EmailAddress."</td>";
 		}
 		else
 		{
