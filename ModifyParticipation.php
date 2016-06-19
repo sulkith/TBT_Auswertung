@@ -63,6 +63,9 @@
 			
 			$points=$_POST['points'];
 			$kills=$_POST['kills'];
+			
+			$paiddate = formatDateFromSQL($pObj->getPaidDate());
+			$registereddate = formatDateFromSQL($pObj->getRegisteredDate());
 				
 			if(($group=$_POST['group'])=="")
 				$group = 0;

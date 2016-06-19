@@ -19,6 +19,20 @@
 			</table>
 		</div>";
 	}
+	function getNormalToolbar()
+	{
+		echo "
+		<div class=\"ToolBar\">
+		<table><tr><td>
+			<input type=button style='width:100%' value='Zur&uuml;ck' ".getOnClick()." /></td><td>
+			<input type=button style='width:100%' value='Home' onclick=\"window.location.href='index.php'\" /></td>
+			</tr><tr><td>
+			<input type=button style='width:100%' value='Teilnahme hinzuf&uuml;gen' onclick=\"window.location.href='AddParticipation.php'\" /></td><td>
+			<input type=button style='width:100%' value='Gruppenzuordnung' onclick=\"window.location.href='groups.php'\" /></td><td>
+			<input type=button style='width:100%' value='Ergebniserfassung' onclick=\"window.location.href='AlphabeticalParticipation.php'\" /></td>
+			</table>
+		</div>";
+	}
 	function getSmallToolbar()
 	{
 		echo "

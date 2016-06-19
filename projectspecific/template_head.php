@@ -12,10 +12,12 @@
  <?php 
 	if(isset($dialog))
 		getDialogToolbar();
-	else if(!isset($smalltoolbar))
+	else if(isset($smalltoolbar))
+		getSmallToolbar();
+	else if(isset($completetoolbar))
 		getCompleteToolbar();
 	else
-		getSmallToolbar();
+		getNormalToolbar();
 	
 	if(isset($errhndl))
 	{

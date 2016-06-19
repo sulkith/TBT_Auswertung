@@ -68,6 +68,7 @@
 	}
 	
 	$title = "Bogenklassen Management";
+	$completetoolbar=1;
 	include_once("projectspecific/template_head.php");
 ?>
   <form action="ManageBowClasses.php" method="post">

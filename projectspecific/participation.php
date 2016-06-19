@@ -214,6 +214,32 @@ function getUserNameForUid($uid){
 		return null;
 }
 
+function getNumAllParticipators()
+{
+	$query = "SELECT StartNr, FirstName, LastName FROM participation;";
+	return getNumEntries($query);
+}
+function getNumFinishedParticipators()
+{
+	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE Points > 0;";
+	return getNumEntries($query);
+}
+function getNumParticipatorsForGroup($groupID)
+{
+	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE GroupNr = '".$groupID."';";
+	return getNumEntries($query);
+}
+function getNumParticipatorsNoPoints()
+{
+	$query = $query = "SELECT StartNr, FirstName, LastName FROM participation WHERE Points=-1 AND GroupNr != -1 ORDER BY LastName,FirstName;";
+	return getNumEntries($query);
+}
+function getNumParticipatorsNoResult()
+{
+	$query = $query = "SELECT StartNr, FirstName, LastName FROM participation WHERE Points=-2 AND GroupNr != -1 ORDER BY LastName,FirstName;";
+	return getNumEntries($query);
+}
+
 ###############################################################
 #  checking functions
 ###############################################################

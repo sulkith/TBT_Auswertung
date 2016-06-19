@@ -68,6 +68,7 @@
 	
 	
 	$title = "Sch&uuml;tzenklassen Management";
+	$completetoolbar=1;
 	include_once("projectspecific/template_head.php");
 ?>
   <form action="ManageArcherClasses.php" method="post">

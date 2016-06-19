@@ -26,6 +26,7 @@
 		}
 	}
 	$title = "Ergbnislisten bearbeiten"; #TODO
+	$completetoolbar=1;
 	include_once("projectspecific/template_head.php");
 ?>
 <div class="CaptionSmall">

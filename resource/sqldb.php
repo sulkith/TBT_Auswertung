@@ -57,6 +57,13 @@ function getFormattedResult($query,$formatter)
 	$resultString .= $formatter->getFoot();
 	return $resultString;
 }
+function getNumEntries($query)
+{
+	$erg = sqlexecutesinglequery($query);
+	$r = mysql_num_rows($erg);
+	if($r == false)$r=0;
+	return $r;
+}
 function getFormattedResultWithoutHead($query,$formatter)
 {
 	$resultString = "";
