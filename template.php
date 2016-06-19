@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 	include("resource/referrer.php");
 	
 	setReferrer("template.php");#TODO

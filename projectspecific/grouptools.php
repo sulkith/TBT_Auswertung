@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include("participation.php");
 include_once("formatter/ParticipationList.php");
 function createGroupTable($x,$y)

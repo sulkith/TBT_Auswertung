@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include_once("resource/sqldb.php");
 include_once("resource/error.php");
 class ArcherClassObject{

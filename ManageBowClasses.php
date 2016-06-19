@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 	include("projectspecific/BowClass.php");
 	include_once('resource/referrer.php');
 	include_once('resource/error.php');
@@ -19,7 +19,7 @@
 	if(isset($_POST['action'])){
 		if($_POST['action']=="Klasse Loeschen"){
 			if(!isset($_POST['BowClassSelect']))
-				$errhndl->setError("Keine Bogenklasse ausgew�hlt");
+				$errhndl->setError("Keine Bogenklasse ausgewählt");
 			else{
 				$BowClassSelect=$_POST['BowClassSelect'];
 				$bcid=$BowClassSelect;

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 	include("resource/referrer.php");
 	include_once("projectspecific/Participation.php");
 	include_once("formatter/ParticipationList.php");

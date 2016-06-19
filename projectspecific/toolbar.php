@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 	include_once('resource/referrer.php');
 	
 	
@@ -33,33 +33,4 @@
 			<input type=button value='Zur&uuml;ck' ".getOnClickNoReferrer()." />
 		</div>";
 	}
-	function getInfoBox($info)
-	{
-		if($info != "")
-		{
-			echo "<div style='background-color:#00FF00; width: 100%;'>";
-			echo $info;
-			echo "</div>";
-		}
-	}
-	function getWarnBox($info)
-	{
-		if($info != "")
-		{
-			echo "<div style='background-color:yellow; width: 100%;'>";
-			echo $info;
-			echo "</div>";
-		}
-	}
-	function getErrorBox($error)
-	{
-		if($error != "")
-		{
-			echo "<div style='background-color:red; width: 100%;'>";
-			echo $error;
-			echo "</div>";
-		}
-	}
-	
-
 ?>

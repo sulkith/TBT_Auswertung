@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 class ParticipationResultTableFormatter{
 	private $mRank;
 	function __construct()

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include_once("projectspecific/ArcherClass.php");
 include_once("projectspecific/BowClass.php");
 class ResultSetElementOptionFormatter{

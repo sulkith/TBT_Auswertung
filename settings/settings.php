@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $sqlhost="localhost";
 $sqldbuser="root";
 $sqldbpass="";
