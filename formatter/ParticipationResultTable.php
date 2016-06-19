@@ -1,16 +1,25 @@
 ﻿<?php
 class ParticipationResultTableFormatter{
 	private $mRank;
+	private $lastPointFactor;
 	function __construct()
     {
 		$this->mRank=1;
+		$this->lastPointFactor=-1;
 	}
 	function setRank($r)
 	{
 		$this->mRank=$r;
+		$this->lastPointFactor=-1;
 	}
 	function format($pObj)
 	{
+		$pointFactor = $pObj->Points*1000+$pObj->Kills;
+		if($pointFactor == $this->lastPointFactor)
+		{
+			if($this->mRank != "-" && $this->mRank>1)
+				$this->mRank--;
+		}
 		$string = "";
 		$string .= "<tr>".
 		"<td>".$this->mRank."</td>".
@@ -35,6 +44,7 @@ class ParticipationResultTableFormatter{
 		";
 		if($this->mRank != "-")
 			$this->mRank++;
+		$this->lastPointFactor = $pointFactor;
 		return $string;
 	}
 	function getHead()
