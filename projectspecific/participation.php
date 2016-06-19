@@ -188,6 +188,14 @@ class participationObject{
 	}
 	
 }
+function payParticipation($id)
+{
+	sqlexecutesinglequery("UPDATE participation SET PaidDate =  CURRENT_DATE() WHERE StartNr=".$id.";");
+}
+function unPayParticipation($id)
+{
+	sqlexecutesinglequery("UPDATE participation SET PaidDate = \"0000-00-00\" WHERE StartNr=".$id.";");
+}
 function addParticipation($FirstName, $LastName, $Club, $EmailAddress, $BowClassID, $ArcherClassID, $Veggie, $PaidDate)
 {
 	#todo plaus BowClassID, ArcherClassID, PaidDate
@@ -287,6 +295,16 @@ function getParticipatorsWithBowClass($bcid, $formatter)
 function getParticipatorsWithArcherClass($acid, $formatter)
 {
 	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE ArcherClassID=".$acid.";";
+	return getFormattedResult($query,$formatter);
+}
+function getNotPaidParticipators($formatter)
+{
+	$query = "SELECT * FROM participation WHERE PaidDate=\"0000-00-00\" ORDER BY RegisterDate;";
+	return getFormattedResult($query,$formatter);
+}
+function getPaidParticipators($formatter)
+{
+	$query = "SELECT * FROM participation WHERE PaidDate!=\"0000-00-00\" ORDER BY PaidDate;";
 	return getFormattedResult($query,$formatter);
 }
 
