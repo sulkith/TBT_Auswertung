@@ -96,9 +96,20 @@ function deleteArcherClass($id)
 }
 function AddArcherClass($name, $comment)
 {
+	if(getIDArcherClassName($name) != -1)
+		return -1;
 	sqlexecutesinglequery("
 	INSERT INTO `archerclasses` (`ClassID`, `ClassName`, `ClassComment`) VALUES (NULL, '".$name."', '".$comment."');
 	");
+	return 0;
+}
+function getIDArcherClassName($name)
+{
+	$query = "SELECT * FROM archerclasses WHERE ClassName='".$name."';";
+	$erg = sqlexecutesinglequery($query);
+	if(!($ClassObj = mysql_fetch_object($erg)))
+		return -1;
+	return $ClassObj->ClassID;
 }
 function getArcherClasses($formatter)
 {

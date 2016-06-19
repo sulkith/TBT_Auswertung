@@ -4,15 +4,15 @@
 	include_once("projectspecific/BowClass.php");
 	include_once("formatter/ClassOption.php");
 	include_once("resource/referrer.php");
+	include_once("resource/error.php");
 	include_once("resource/misc.php");
-	$info = "";
-	$error = "";
+
 	if(isset($_GET['pid']))
 	{
 		$pid = $_GET['pid'];
 		if(!checkParticipationExists($pid))
 		{
-			$info = "Diese Startnummer ist nicht vergeben!<br>";
+			$errhndl->setError("Diese Startnummer ist nicht vergeben!");
 		}
 		$pObj = new participationObject($pid);
 		$name = $pObj->getFirstName();
@@ -41,16 +41,16 @@
 			$pid = $_POST['pid'];
 			if(!checkParticipationExists($pid))
 			{
-				$info = "Diese Startnummer ist nicht vergeben!<br>";
+				$errhndl->setError("Diese Startnummer ist nicht vergeben!");
 			}
 			$pObj = new participationObject($pid);
 			if(($name=$_POST['name'])=="")
-				$info .= "Kein Vorname eingegeben<br>";
+				$errhndl->setError("Kein Vorname eingegeben");
 			if(($lastname=$_POST['lastname'])=="")
-				$info .= "Kein Nachname eingegeben<br>";
+				$errhndl->setError("Kein Nachname eingegeben");
 
 			if(($veg=$_POST['Veggie'])=="")
-				$info .= "Veggie nicht eingegeben<br>";
+				$errhndl->setError("Veggie nicht eingegeben");
 			
 			$bclass=$_POST['BowClassSelect'];
 			$aclass=$_POST['ArcherClassSelect'];			
@@ -86,7 +86,7 @@
 			{
 				#points set check bclass aclass...
 				if($bclass == -1)
-					$error .= "Keine Bogenklasse eingegeben<br>";
+					$errhndl->setError("Keine Bogenklasse eingegeben");
 				else
 				{
 					if($bclass != $pObj->getBowClass())
@@ -95,7 +95,7 @@
 					$bclasstext = $bCObj->getName();
 				}
 				if($aclass == -1)
-					$error .= "Keine Sch&uuml;tzenklasse eingegeben<br>";
+					$errhndl->setError("Keine Sch&uuml;tzenklasse eingegeben");
 				else
 				{
 					if($aclass != $pObj->getArcherClass())
@@ -104,9 +104,9 @@
 					$aclasstext = $aCObj->getName();
 				}
 				if($kills == -1)
-					$error .= "Keine Kills eingegeben";
+					$errhndl->setError("Keine Kills eingegeben");
 				
-				if($error == "")
+				if(!$errhndl->hasError())
 				{
 					if($kills != $pObj->getKills())
 						$pObj->setKills($kills);
@@ -144,9 +144,9 @@
 				$points = "";
 				$finished = false;
 			}
-			if($error=="" && $info=="")
+			if(!$errhndl->hasError())
 			{
-				$info = "Gespeichert";
+				!$errhndl->setInfo("Gespeichert");
 			}
 		}
 	}

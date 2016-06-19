@@ -1,4 +1,5 @@
-<?php
+Ôªø<?php
+	include_once("resource/error.php");
 	include_once("projectspecific/ArcherClass.php");
 	include_once("projectspecific/BowClass.php");
 	include_once("projectspecific/Participation.php");
@@ -7,39 +8,38 @@
 	if(isset($_POST['action']))
 	if($_POST['action']=="Eintragen")
 	{
-		$info = "";
 		if(($name=$_POST['name'])=="")
-			$info .= "Kein Vorname eingegeben<br>";
+			$errhndl->setError("Kein Vorname eingegeben");
 		if(($lastname=$_POST['lastname'])=="")
-			$info .= "Kein Nachname eingegeben";
+			$errhndl->setError("Kein Nachname eingegeben");
 		if(($bclass=$_POST['BowClassSelect'])=="")
-			$info .= "Keine Bogenklasse eingegeben";
+			$errhndl->setError("Keine Bogenklasse eingegeben");
 		if(($aclass=$_POST['ArcherClassSelect'])=="")
-			$info .= "Keine Sch&uuml;tzenklasse eingegeben";
+			$errhndl->setError("Keine Sch&uuml;tzenklasse eingegeben");
 		if(($veg=$_POST['Veggie'])=="")
-			$info .= "Veggie nicht eingegeben";
+			$errhndl->setError("Veggie nicht eingegeben");
 		#Is this Website only used by the club? Or is an contact mail address needed?
 		$email=$_POST['email'];
 		#if(($email=$_POST['email'])=="")
-		#	$info .= "Keine E-Mail eingegeben";
+		#	$errhndl->setError("Keine E-Mail eingegeben");
 	
 		$club=$_POST['club'];
 			
-		if($info == "")
+		if(!$errhndl->hasError())
 		{
 			$errorCode = addParticipation($name, $lastname, $club, $email, $bclass, $aclass, $veg, "0000-00-00");
 			if($errorCode == 0)
 			{
-				$info = "Teilnahme erfolgreich hinzugef¸gt";
+				$errhndl->setInfo("Teilnahme erfolgreich hinzugef√ºgt");
 				unset ($name, $lastname, $email, $aclass, $bclass, $veg, $club);
 			}
 			else if($errorCode == 1)
 			{
-				$info = "Bogenklasse ung¸ltig";
+				$errhndl->setError("Bogenklasse ung√ºltig");
 			}
 			else if($errorCode == 2)
 			{
-				$info = "Sch&uuml;tzenklasse ung¸ltig";
+				$errhndl->setError("Sch&uuml;tzenklasse ung√ºltig");
 			}
 		}
 	}

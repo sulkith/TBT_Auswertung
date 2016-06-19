@@ -10,7 +10,6 @@
 		$bcid = $_GET['del'];
 		if(checkBowClassUsed($bcid) == true)
 		{
-			#todo show error with link
 			$errhndl->setInfo("Bogenklasse ".getBowClassName($bcid)." wird noch verwendet:");
 			$errhndl->setInfo(getParticipatorsWithBowClass($bcid,new ParticipationListFormatter()));
 			setReferrer("ManageBowClasses.php?del=".$bcid);
@@ -35,17 +34,26 @@
 			}
 		}
 		if($_POST['action']=="Klasse anlegen"){
-			$info = "";
-			if(($CName = $_POST['CName']) == "")
+			if(!isset($_POST['CName']) || $_POST['CName']=="")
 			{
 				$errhndl->setError("Kein Klassenname eingegeben");
-				echo $info;
 			}
-			#Comment is not neccessary --> displayed nowhere!
-			#if (($CComment = $_POST['CComment']) == "")
-			#	$errhndl->setError("Kein Kommentar eingegeben");
+			else
+			{
+				$CName = $_POST['CName'];
+			}
+			if (!isset($_POST['CComment']))
+			{
+				$CComment="";
+				#Comment is not neccessary --> displayed nowhere!
+				#$errhndl->setError("Kein Kommentar eingegeben");
+			}
+			else
+			{
+				$CComment = $_POST['CComment'];
+			}
 			
-			if($info == ""){
+			if(!$errhndl->hasError()){
 				$errorCode = AddBowClass($CName,$CComment);
 				if($errorCode == -1)
 				{

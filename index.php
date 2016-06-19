@@ -1,6 +1,7 @@
 <?php 
 	include_once('resource/referrer.php');
 	setReferrer("index.php");
+	include_once('resource/error.php');
 	$smalltoolbar = 1;
 	$title = "TBT-Auswertung";
 	include_once("projectspecific/template_head.php");

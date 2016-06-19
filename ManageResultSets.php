@@ -1,16 +1,17 @@
 <?php
-	include("resource/referrer.php");
-	include("projectspecific/result.php");
+	include_once("resource/referrer.php");
+	include_once("resource/error.php");
+	include_once("projectspecific/result.php");
 	include_once("formatter/ResultSetElementList.php");
 	include_once("formatter/ResultSetTable.php");
 	
+	
 	setReferrer("ManageResultSets.php");#TODO
-	$title = "Ergbnislisten bearbeiten"; #TODO
-	include_once("projectspecific/template_head.php");
+	
 	if(isset($_GET['remove']))
 	{
 		removeResultSetList($_GET['remove']);
-		$info = "Ergebnisliste entfernt<br>";
+		$errhndl->setInfo("Ergebnisliste entfernt");
 	}
 	if(isset($_POST['action']))
 	{
@@ -18,9 +19,14 @@
 		{
 			$name = $_POST['rsname'];
 			if($name != "")
+			{
 				addResultSet($name);
+				$errhndl->setInfo("Ergebnisliste angelegt");
+			}
 		}
 	}
+	$title = "Ergbnislisten bearbeiten"; #TODO
+	include_once("projectspecific/template_head.php");
 ?>
 <div class="CaptionSmall">
 		<h1>Ergebnislisten verwalten</h1>

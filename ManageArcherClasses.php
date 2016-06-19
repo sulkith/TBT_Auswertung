@@ -9,42 +9,60 @@
 		$acid = $_GET['del'];
 		if(checkArcherClassUsed($acid) == true)
 		{
-			$info = "Sch¸tzenklasse wird noch verwendet:";
-			$info .= getParticipatorsWithArcherClass($acid,new ParticipationListFormatter());
+			$errhndl->setInfo("Sch√ºtzenklasse ".getArcherClassName($acid)." wird noch verwendet:");
+			$errhndl->setInfo(getParticipatorsWithArcherClass($acid,new ParticipationListFormatter()));
 			setReferrer("ManageArcherClasses.php?del=".$acid);
 		}
 	}
 	
 	if(isset($_POST['action'])){
 		if($_POST['action']=="Klasse Loeschen"){
-			if(!$ArcherClassSelect=$_POST['ArcherClassSelect'])
-				$info = "Keine Sch¸tzenklasse ausgew‰hlt";
+			if(!isset($_POST['ArcherClassSelect']))
+				$errhndl->setError("Keine Sch√ºtzenklasse ausgew√§hlt");
 			else{
+				$ArcherClassSelect=$_POST['ArcherClassSelect'];
 				$acid=$ArcherClassSelect;
 				if(deleteArcherClass($acid) == -1)
 				{
-					$info = "Sch¸tzenklasse wird noch verwendet:";
-					$info .= getParticipatorsWithArcherClass($acid,new ParticipationListFormatter());
+					$errhndl->setError("Sch√ºtzenklasse ".getArcherClassName($acid)." wird noch verwendet:");
+					$errhndl->setError(getParticipatorsWithArcherClass($acid,new ParticipationListFormatter()));
+					setReferrer("ManageArcherClasses.php?del=".$acid);
 					setReferrer("ManageArcherClasses.php?del=".$acid);
 				}
 				else
-					$info = "Sch¸tzenklasse gel&ouml;scht";
+					$errhndl->setInfo("Sch√ºtzenklasse gel&ouml;scht");
 			}
 		}
 		if($_POST['action']=="Klasse anlegen"){
-			$info = "";
-			if(($CName = $_POST['CName']) == "")
+			if(!isset($_POST['CName']) || $_POST['CName']=="")
 			{
-				$info .= "Kein Klassenname eingegeben<br>";
-				echo $info;
+				$errhndl->setError("Kein Klassenname eingegeben");
 			}
-			#Comment is not neccessary --> displayed nowhere!
-			#if (($CComment = $_POST['CComment']) == "")
-			#	$info .= "Kein Kommentar eingegeben<br>";
+			else
+			{
+				$CName = $_POST['CName'];
+			}
+			if (!isset($_POST['CComment']))
+			{
+				$CComment="";
+				#Comment is not neccessary --> displayed nowhere!
+				#$errhndl->setError("Kein Kommentar eingegeben");
+			}
+			else
+			{
+				$CComment = $_POST['CComment'];
+			}
 			
-			if($info == ""){
-				AddArcherClass($CName,$CComment);
-			}
+			if(!$errhndl->hasError()){
+				$errorCode = AddArcherClass($CName,$CComment);
+				if($errorCode == -1)
+				{
+					$errhndl->setError("Sch√ºtzenklasse existiert bereits");
+				}
+				else
+				{
+					$errhndl->setInfo("Sch√ºtzenklasse angelegt");
+				}			}
 		}
 	}
 	

@@ -1,12 +1,11 @@
 <?php
-	include("resource/referrer.php");
-	include("projectspecific/result.php");
+	include_once("resource/referrer.php");
+	include_once("projectspecific/result.php");
+	include_once("resource/error.php");
 	include_once("formatter/ResultSetElementList.php");
 	include_once("formatter/ResultSetElementOption.php");
 	include_once("formatter/ClassOption.php");
 	
-	$info = "";
-	$error = "";
 	if(isset($_GET['rsid']))
 	{
 		$rsid = $_GET['rsid'];
@@ -23,25 +22,26 @@
 			$aclass = $_POST['ArcherClassSelect'];
 			if(!checkArcherClassExists($aclass))
 			{
-				$error .= "Schützenklasse existiert nicht<br>";
+				$errhndl->setError("Schützenklasse existiert nicht");
 			}
 			if(!checkBowClassExists($aclass))
 			{
-				$error .= "Schützenklasse existiert nicht<br>";
+				$errhndl->setError("Schützenklasse existiert nicht");
 			}
 			if(!checkResultSetElementIDExists($rsid))
 			{
-				$error .= "Ergebnisliste existiert nicht<br>";
+				$errhndl->setError("Ergebnisliste existiert nicht");
 			}
-			if($error == "")
+			if(!$errhndl->hasError())
 			{
 				if(!checkResultSetElementExists($rsid,$aclass,$bclass))
 				{
 					addResultSetElement($rsid,$aclass,$bclass);
+					$errhndl->setInfo("Auswahl hinzugefügt");
 				}
 				else
 				{
-					$info .= "Die Auswahl ist bereits in dieser Ergebnisliste enthalten<br>";
+					$errhndl->setInfo("Die Auswahl ist bereits in dieser Ergebnisliste enthalten");
 				}
 			}
 			$rs = new ResultSetObject($rsid);
@@ -52,6 +52,7 @@
 			$rsid = $_POST['rsid'];
 			$rseid = $_POST['ResultSetElement'];
 			removeResultSetElement($rseid);
+			$errhndl->setInfo("Auswahl entfernt");
 			$rs = new ResultSetObject($rsid);
 			$rsname = $rs->getName();
 		}
