@@ -91,7 +91,7 @@ function AddBowClass($name, $comment)
 	if(getIDBowClassName($name) != -1)
 		return -1;
 	sqlexecutesinglequery("
-	INSERT INTO `tbttournament`.`bowclasses` (`ClassID`, `ClassName`, `ClassComment`) VALUES (NULL, '".$name."', '".$comment."');
+	INSERT INTO bowclasses (`ClassID`, `ClassName`, `ClassComment`) VALUES (NULL, '".$name."', '".$comment."');
 	");
 	return 0;
 }
