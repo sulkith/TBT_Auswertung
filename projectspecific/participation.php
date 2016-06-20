@@ -307,5 +307,14 @@ function getPaidParticipators($formatter)
 	$query = "SELECT * FROM participation WHERE PaidDate!=\"0000-00-00\" ORDER BY PaidDate;";
 	return getFormattedResult($query,$formatter);
 }
+function getMaxGroup()
+{
+	$query = "SELECT MAX(GroupNr) as MAXGROUP FROM participation;";
+	$result = sqlexecutesinglequery($query);
+	$erg = mysql_fetch_object($result);
+	if($erg)
+		return $erg->MAXGROUP;
+	return 0;
+}
 
 ?>

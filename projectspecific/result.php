@@ -141,7 +141,7 @@ function getResultSet($id, $formatter)
 	ResultSetElement.BowClassID = participation.BowClassID AND
 	ResultSetElement.ArcherClassID = participation.ArcherClassID AND
 	ResultSetElement.ResultSetID=".$id."
-	ORDER BY StartNr, Kills, Points;";
+	ORDER BY Points DESC, Kills DESC, StartNr;";
 	$formatter->setRank("1");
 	$string = getFormattedResult($query,$formatter);
 	return $string;
@@ -151,7 +151,7 @@ function getCompleteResult($formatter)
 {
 	$s = $formatter->getHead();
 	$formatter->setRank("1");
-	$s .= getFormattedResultWithoutHead("SELECT * FROM participation WHERE Points!=-1 AND Points !=-2 ORDER BY StartNr, Kills, Points;",$formatter);
+	$s .= getFormattedResultWithoutHead("SELECT * FROM participation WHERE Points!=-1 AND Points !=-2 ORDER BY POINTS DESC, Kills DESC, StartNr;",$formatter);
 	$formatter->setRank("-");
 	$s .= getFormattedResultWithoutHead("SELECT * FROM participation WHERE Points=-1 OR Points =-2 ORDER BY StartNr;",$formatter);
 	$s .= $formatter->getFoot();
@@ -181,8 +181,9 @@ function getCompleteResultSets($formatter)
 	$s = "";
 	while($pObj = mysql_fetch_object($erg))
 	{
-		$s .= "<h1>".$pObj->ResultSetName."</h1>";
+		$s .= "<div class=resulttable><h1>".$pObj->ResultSetName."</h1>";
 		$s .= getResultSet($pObj->ResultSetID,$formatter); 
+		$s .= "</div>";
 	}
 	return $s;
 }
