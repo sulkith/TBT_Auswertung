@@ -3,6 +3,7 @@
 	include_once("projectspecific/ArcherClass.php");
 	include_once("projectspecific/BowClass.php");
 	include_once("formatter/ClassOption.php");
+	include_once("formatter/ParticipationList.php");
 	include_once("resource/referrer.php");
 	include_once("resource/error.php");
 	include_once("resource/misc.php");
@@ -149,7 +150,7 @@
 			}
 			if(!$errhndl->hasError())
 			{
-				!$errhndl->setInfo("Gespeichert");
+				$errhndl->setInfo("Gespeichert");
 			}
 		}
 	}
@@ -215,5 +216,13 @@ else
 
 <input type="submit" name="action" value='Speichern' />
   </form>
+  <table width=600px><colgroup><col width="1*"><col width="1*"></colgroup><tr>
+  <td style="vertical-align:top">
+  <?php if($group>0)echo "<br>Alle Schützen in dieser Gruppe:".getParticipationsForGroup($group,new ParticipationListFormatter());?>
+  </td>
+  <td style="vertical-align:top">
+  <?php echo "<br>Alle unzugeordneten Schützen:".getParticipationsForGroup(0,new ParticipationListFormatter());?>
+  </td></tr>
+  
 <!-- Insert Content here -->
 <?php include_once("projectspecific/template_foot.php");?>
