@@ -2,10 +2,12 @@
 class ParticipationResultTableFormatter{
 	private $mRank;
 	private $lastPointFactor;
+	private $carry;
 	function __construct()
     {
 		$this->mRank=1;
 		$this->lastPointFactor=-1;
+		$this->carry=0;
 	}
 	function setRank($r)
 	{
@@ -19,6 +21,12 @@ class ParticipationResultTableFormatter{
 		{
 			if($this->mRank != "-" && $this->mRank>1)
 				$this->mRank--;
+			$this->carry++;
+		}
+		else
+		{
+			$this->mRank+=$this->carry;
+			$this->carry=0;
 		}
 		$string = "";
 		$string .= "<tr>".
