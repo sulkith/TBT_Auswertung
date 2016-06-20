@@ -8,6 +8,16 @@ function sqlopenhandle(){
 	//echo "Database " .  $database . " is selected";
 	return $chandle;
 }
+function sqlcreatedb(){
+	include ("settings/settings.php");
+	$chandle = mysql_connect($sqlhost, $sqldbuser, $sqldbpass) 
+		or die("Connection Failure to Database");
+	//echo "Connected to database server<br>";
+	$ergebnis = sqlexecutequery($chandle, "CREATE DATABASE IF NOT EXISTS ".$sqldbname.";");
+	mysql_select_db($sqldbname, $chandle) or die ($sqldbname . " Database not found." . $sqldbuser);
+	//echo "Database " .  $database . " is selected";
+	return $ergebnis;
+}
 function sqlclosehandle($chandle){
 	mysql_close($chandle);
 }

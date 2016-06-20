@@ -2,7 +2,8 @@
 $sqlhost="localhost";
 $sqldbuser="root";
 $sqldbpass="";
-$sqldbname="tbttournament";
+$sqldbname="tbttournament_Test1";
 $httpsservername="localhost/site";
+$createdbpass="PassworD";
 $development=1;
 ?>
