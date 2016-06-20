@@ -4,6 +4,7 @@
 	include_once("projectspecific/BowClass.php");
 	include_once("formatter/ClassOption.php");
 	include_once("formatter/ParticipationList.php");
+	include_once("formatter/TabbedParticipationList.php");
 	include_once("resource/referrer.php");
 	include_once("resource/error.php");
 	include_once("resource/misc.php");
@@ -154,6 +155,16 @@
 			}
 		}
 	}
+	if($group == 0)
+	{
+		$grouptabindex = 1;
+		$savetabindex1 = 2;
+	}
+	else
+	{
+		$grouptabindex = 100;
+		$savetabindex1 = 25;
+	}
 	$bCObj = new BowClassObject($pObj->getBowClass());
 	$bclasstext = $bCObj->getName();
 	$aCObj = new ArcherClassObject($pObj->getArcherClass());
@@ -170,11 +181,11 @@
 	</div>
 	<h2>Turnierdaten</h2>
 	<table>
-<tr><td>Punkte</td><td><input type="number" name="points" value="<?php if($points != -1)echo $points; ?>" /></td><td>-2: Kein Ergebnis abgegeben</td></tr>
-<tr><td>Kills</td><td><input type="number" name="kills" value="<?php if($kills != -1)echo $kills; ?>"/></td></tr>
+<tr><td>Punkte</td><td><input type="number" tabindex=20 name="points" value="<?php if($points != -1)echo $points; ?>" /></td><td>-2: Kein Ergebnis abgegeben</td></tr>
+<tr><td>Kills</td><td><input type="number" tabindex=21 name="kills" value="<?php if($kills != -1)echo $kills; ?>"/></td></tr>
 <tr><td>Bogenklasse</td><td>
 					<?php
-						$formatter = new ClassOptionFormatter("<select name='BowClassSelect' size='1' style=\"width:100%\">");
+						$formatter = new ClassOptionFormatter("<select name='BowClassSelect' tabindex=22 size='1' style=\"width:100%\">");
 						if($finished == true)
 							$formatter->setSelected($bclass);
 						else
@@ -184,25 +195,25 @@
 				</td></tr>
 <tr><td>Sch&uuml;tzenklasse</td><td>
 					<?php
-						$formatter = new ClassOptionFormatter("<select name='ArcherClassSelect' size='1' style=\"width:100%\">");
+						$formatter = new ClassOptionFormatter("<select name='ArcherClassSelect' tabindex=23 size='1' style=\"width:100%\">");
 						if($finished == true)
 							$formatter->setSelected($aclass);
 						else
 							$formatter->setAdditionalElements("<option value=-1 selected>Bitte Ausw&auml;hlen</option>");
 						echo getArcherClasses($formatter);
 					?></td></tr>
-<tr><td>Gruppe</td><td><input type="number" name="group" value="<?php echo $group; ?>"/></td><td>0: noch nicht zugewiesen &nbsp;&nbsp;&nbsp;&nbsp; -1: nicht erschienen</td></tr>
+<tr><td>Gruppe</td><td><input type="number" tabindex=<?php echo $grouptabindex ?> name="group" value="<?php echo $group; ?>"/></td><td>0: noch nicht zugewiesen &nbsp;&nbsp;&nbsp;&nbsp; -1: nicht erschienen</td></tr>
 </table>
-<input type="submit" name="action" value='Speichern' />
+<input type="submit" name="action" tabindex=<?php echo $savetabindex1 ?> value='Speichern' />
 	<h2>Teilnehmerdaten</h2>
 	<input type="hidden" name="pid" value="<?php echo $pid; ?>">
 <table>
-<tr><td>Vorname</td><td><input type="text" name="name" value="<?php if(isset($name))echo $name; ?>" /></td></tr>
-<tr><td>Nachname</td><td><input type="text" name="lastname" value="<?php if(isset($lastname))echo $lastname; ?>"/></td></tr>
-<tr><td>Verein</td><td><input type="text" name="club" value="<?php if(isset($club))echo $club; ?>"/></td></tr>
-<tr><td>Bogenklasse</td><td><input type="text" value="<?php if(isset($bclasstext))echo $bclasstext; ?>" disabled/></td></tr>
-<tr><td>Sch&uuml;tzenklasse</td><td><input type="text" value="<?php if(isset($aclasstext))echo $aclasstext; ?>" disabled/></td></tr>
-<tr><td>Veggie</td><td><select name='Veggie' size='1' style="width:100%">
+<tr><td>Vorname</td><td><input type="text" tabindex=30 name="name" value="<?php if(isset($name))echo $name; ?>" /></td></tr>
+<tr><td>Nachname</td><td><input type="text" tabindex=31 name="lastname" value="<?php if(isset($lastname))echo $lastname; ?>"/></td></tr>
+<tr><td>Verein</td><td><input type="text" tabindex=32 name="club" value="<?php if(isset($club))echo $club; ?>"/></td></tr>
+<tr><td>Bogenklasse</td><td><input type="text" tabindex=100 value="<?php if(isset($bclasstext))echo $bclasstext; ?>" disabled/></td></tr>
+<tr><td>Sch&uuml;tzenklasse</td><td><input type="text" tabindex=100 value="<?php if(isset($aclasstext))echo $aclasstext; ?>" disabled/></td></tr>
+<tr><td>Veggie</td><td><select name='Veggie' tabindex=33 size='1' style="width:100%">
 <?php
 if($veg == 1)
 	echo "<option selected value=1>Yes</option><option value=0>No</option>";
@@ -210,16 +221,24 @@ else
 	echo "<option value=1>Yes</option><option selected value=0>No</option>"
 ?>
 </select></td></tr>
-<tr><td>E-Mail</td><td><input type="email" name="email" value="<?php if(isset($email))echo $email; ?>"/></td></tr>
-<tr><td>Anmeldedatum</td><td><input type="text" value="<?php echo $registereddate; ?>" disabled/></td></tr>
-<tr><td>Zahldatum</td><td><input type="text" value="<?php echo $paiddate; ?>" disabled/></td></tr>
+<tr><td>E-Mail</td><td><input type="email" tabindex=34 name="email" value="<?php if(isset($email))echo $email; ?>"/></td></tr>
+<tr><td>Anmeldedatum</td><td><input type="text" tabindex=100 value="<?php echo $registereddate; ?>" disabled/></td></tr>
+<tr><td>Zahldatum</td><td><input type="text" tabindex=100 value="<?php echo $paiddate; ?>" disabled/></td></tr>
 </table>
 
-<input type="submit" name="action" value='Speichern' />
-  </form></td><td>
+<input type="submit" name="action" tabindex=35 value='Speichern' />
+  </form></td><td style="vertical-align:top">
   <!--<table width=600px><colgroup><col width="1*"><col width="1*"></colgroup><tr>
   <td style="vertical-align:top">-->
-  <?php if($group>0)echo "<br>Alle Schützen in dieser Gruppe:".getParticipationsForGroup($group,new ParticipationListFormatter());?>
+<?php 
+	if($group>0)
+	{
+		if($finished==true)
+			echo "<br>Alle Schützen in dieser Gruppe:".getParticipationsForGroup($group,new TabbedParticipationListFormatter());
+		else
+			echo "<br>Alle Schützen in dieser Gruppe:".getParticipationsForGroup($group,new ParticipationListFormatter());
+	}
+?>
   <!--</td>
   <td style="vertical-align:top">-->
   <?php echo "<br>Alle unzugeordneten Schützen:".getParticipationsForGroup(0,new ParticipationListFormatter());?>
