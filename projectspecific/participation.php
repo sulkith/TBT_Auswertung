@@ -264,7 +264,7 @@ function checkParticipationExists($id)
 #  Formatter based Outputs
 ###############################################################
 function getParticipationsForGroup($groupID, $formatter){
-	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE GroupNr = '".$groupID."';";
+	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE GroupNr = '".$groupID."' ORDER BY LastName,FirstName;;";
 	return getFormattedResult($query,$formatter);
 }
 function getMissingParticipators($formatter)

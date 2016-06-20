@@ -52,22 +52,22 @@
 		<h1>Teilnahme hinzuf&uuml;gen</h1>
 	</div>
 <table>
-<tr><td>Vorname:</td><td><input type="text" name="name" value="<?php if(isset($name))echo $name; ?>" /></td></tr>
-<tr><td>Nachname</td><td><input type="text" name="lastname" value="<?php if(isset($lastname))echo $lastname; ?>"/></td></tr>
-<tr><td>Verein</td><td><input type="text" name="club" value="<?php if(isset($club))echo $club; ?>"/></td></tr>
+<tr><td>Vorname:</td><td><input type="text" tabindex=1 name="name" value="<?php if(isset($name))echo $name; ?>" /></td></tr>
+<tr><td>Nachname</td><td><input type="text" tabindex=2 name="lastname" value="<?php if(isset($lastname))echo $lastname; ?>"/></td></tr>
+<tr><td>Verein</td><td><input type="text" tabindex=3 name="club" value="<?php if(isset($club))echo $club; ?>"/></td></tr>
 <tr><td>Bogenklasse</td><td>
 					<?php
-						$formatter = new ClassOptionFormatter("<select name='BowClassSelect' size='1' style=\"width:100%\">");
+						$formatter = new ClassOptionFormatter("<select name='BowClassSelect' tabindex=4 size='1' style=\"width:100%\">");
 						echo getBowClasses($formatter);
 					?>
 				</td></tr>
 <tr><td>Sch&uuml;tzenklasse</td><td>
 				<?php
-					$formatter = new ClassOptionFormatter("<select name='ArcherClassSelect' size='1' style=\"width:100%\">");
+					$formatter = new ClassOptionFormatter("<select name='ArcherClassSelect' tabindex=5 size='1' style=\"width:100%\">");
 					echo getArcherClasses($formatter);
 				?>
 				</td></tr>
-<tr><td>Veggie</td><td><select name='Veggie' size='1' style="width:100%">
+<tr><td>Veggie</td><td><select name='Veggie' tabindex=6 size='1' style="width:100%">
 <?php
 if($veg == 1)
 	echo "<option selected value=1>Yes</option><option value=0>No</option>";
@@ -75,9 +75,9 @@ else
 	echo "<option value=1>Yes</option><option selected value=0>No</option>"
 ?>
 </select></td></tr>
-<tr><td>E-Mail</td><td><input type="text" name="email" value="<?php if(isset($email))echo $email; ?>"/></td></tr>
+<tr><td>E-Mail</td><td><input type="email" tabindex=7 name="email" value="<?php if(isset($email))echo $email; ?>"/></td></tr>
 </table>
 
-<input type="submit" name="action" value='Eintragen' />
+<input type="submit" name="action" tabindex=8 value='Eintragen' />
   </form>
 <?php include_once("projectspecific/template_foot.php");?>

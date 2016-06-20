@@ -163,15 +163,15 @@
 	$dialog = 1;
 	include_once("projectspecific/template_head.php");
 ?>
-
+<table><tr><td>
 <form action="ModifyParticipation.php" method="post">
 <div class="CaptionSmall">
 		<h1><?php echo $pObj->getCompleteName();?></h1>
 	</div>
 	<h2>Turnierdaten</h2>
 	<table>
-<tr><td>Punkte</td><td><input type="text" name="points" value="<?php if($points != -1)echo $points; ?>" /></td><td>-2: Kein Ergebnis abgegeben</td></tr>
-<tr><td>Kills</td><td><input type="text" name="kills" value="<?php if($kills != -1)echo $kills; ?>"/></td></tr>
+<tr><td>Punkte</td><td><input type="number" name="points" value="<?php if($points != -1)echo $points; ?>" /></td><td>-2: Kein Ergebnis abgegeben</td></tr>
+<tr><td>Kills</td><td><input type="number" name="kills" value="<?php if($kills != -1)echo $kills; ?>"/></td></tr>
 <tr><td>Bogenklasse</td><td>
 					<?php
 						$formatter = new ClassOptionFormatter("<select name='BowClassSelect' size='1' style=\"width:100%\">");
@@ -191,8 +191,9 @@
 							$formatter->setAdditionalElements("<option value=-1 selected>Bitte Ausw&auml;hlen</option>");
 						echo getArcherClasses($formatter);
 					?></td></tr>
-<tr><td>Gruppe</td><td><input type="text" name="group" value="<?php echo $group; ?>"/></td><td>0: noch nicht zugewiesen &nbsp;&nbsp;&nbsp;&nbsp; -1: nicht erschienen</td></tr>
+<tr><td>Gruppe</td><td><input type="number" name="group" value="<?php echo $group; ?>"/></td><td>0: noch nicht zugewiesen &nbsp;&nbsp;&nbsp;&nbsp; -1: nicht erschienen</td></tr>
 </table>
+<input type="submit" name="action" value='Speichern' />
 	<h2>Teilnehmerdaten</h2>
 	<input type="hidden" name="pid" value="<?php echo $pid; ?>">
 <table>
@@ -209,20 +210,21 @@ else
 	echo "<option value=1>Yes</option><option selected value=0>No</option>"
 ?>
 </select></td></tr>
-<tr><td>E-Mail</td><td><input type="text" name="email" value="<?php if(isset($email))echo $email; ?>"/></td></tr>
+<tr><td>E-Mail</td><td><input type="email" name="email" value="<?php if(isset($email))echo $email; ?>"/></td></tr>
 <tr><td>Anmeldedatum</td><td><input type="text" value="<?php echo $registereddate; ?>" disabled/></td></tr>
 <tr><td>Zahldatum</td><td><input type="text" value="<?php echo $paiddate; ?>" disabled/></td></tr>
 </table>
 
 <input type="submit" name="action" value='Speichern' />
-  </form>
-  <table width=600px><colgroup><col width="1*"><col width="1*"></colgroup><tr>
-  <td style="vertical-align:top">
+  </form></td><td>
+  <!--<table width=600px><colgroup><col width="1*"><col width="1*"></colgroup><tr>
+  <td style="vertical-align:top">-->
   <?php if($group>0)echo "<br>Alle Schützen in dieser Gruppe:".getParticipationsForGroup($group,new ParticipationListFormatter());?>
-  </td>
-  <td style="vertical-align:top">
+  <!--</td>
+  <td style="vertical-align:top">-->
   <?php echo "<br>Alle unzugeordneten Schützen:".getParticipationsForGroup(0,new ParticipationListFormatter());?>
-  </td></tr>
+  <!--</td></tr>
+  <table>--></td></tr></table>
   
 <!-- Insert Content here -->
 <?php include_once("projectspecific/template_foot.php");?>
