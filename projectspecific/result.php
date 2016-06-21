@@ -19,7 +19,7 @@ class ResultSetObject{
     function __construct1($id)
     {    			
     	//Get data from the database
-        $query = "SELECT * FROM ResultSets WHERE ResultSetID='".$id."';";
+        $query = "SELECT * FROM ResultSets WHERE ResultSetID='".sqlescape($id)."';";
 		$erg = sqlexecutesinglequery($query);
 		$classObj = mysql_fetch_object($erg);
 		if(!$classObj){
@@ -38,27 +38,27 @@ class ResultSetObject{
 	{
 		$this->mName = $name;
 		sqlexecutesinglequery("
-			UPDATE ResultSets SET ResultSetName = '".$this->$mName."' WHERE ResultSetID=".$this->mID.";
+			UPDATE ResultSets SET ResultSetName = '".sqlescape($this->$mName)."' WHERE ResultSetID='".sqlescape($this->mID)."';
 		");
 	}
 }
 function addResultSet($name)
 {
-	sqlexecutesinglequery("INSERT INTO resultsets (ResultSetID, ResultSetName) VALUES (NULL, '".$name."');");
+	sqlexecutesinglequery("INSERT INTO resultsets (ResultSetID, ResultSetName) VALUES (NULL, '".sqlescape($name)."');");
 	
 }
 function removeResultSetList($rid)
 {
-	sqlexecutesinglequery("DELETE FROM resultsetelement WHERE ResultSetID = ".$rid.";");
-	sqlexecutesinglequery("DELETE FROM resultsets WHERE ResultSetID = ".$rid.";");
+	sqlexecutesinglequery("DELETE FROM resultsetelement WHERE ResultSetID = '".sqlescape($rid)."';");
+	sqlexecutesinglequery("DELETE FROM resultsets WHERE ResultSetID = '".sqlescape($rid)."';");
 }
 function removeResultSetElement($rid)
 {
-	sqlexecutesinglequery("DELETE FROM resultsetelement WHERE ResultSetElementID = ".$rid.";");
+	sqlexecutesinglequery("DELETE FROM resultsetelement WHERE ResultSetElementID = '".sqlescape($rid)."';");
 }
 function checkResultSetElementIDExists($rsid)
 {
-	$query = "SELECT * FROM resultsets WHERE ResultSetID=".$rsid.";";
+	$query = "SELECT * FROM resultsets WHERE ResultSetID='".sqlescape($rsid)."';";
 	$erg = sqlexecutesinglequery($query);
 	if(($userobj = mysql_fetch_object($erg)))
 		return true;
@@ -68,12 +68,12 @@ function checkResultSetElementIDExists($rsid)
 function addResultSetElement($rsid,$aclass,$bclass)
 {
 	$query = "INSERT INTO resultsetelement(resultSetElementID, ResultSetID, BowClassID, ArcherClassID) 
-	VALUES (NULL, '".$rsid."', '".$bclass."', '".$aclass."');";
+	VALUES (NULL, '".sqlescape($rsid)."', '".sqlescape($bclass)."', '".sqlescape($aclass)."');";
 	sqlexecutesinglequery($query);
 }
 function checkResultSetElementExists($rsid,$aclass,$bclass)
 {
-	$query = "SELECT * FROM resultsetelement WHERE ResultSetID=".$rsid." AND BowClassID=".$bclass." AND ArcherClassID=".$aclass.";";
+	$query = "SELECT * FROM resultsetelement WHERE ResultSetID='".sqlescape($rsid)."' AND BowClassID='".sqlescape($bclass)."' AND ArcherClassID='".sqlescape($aclass)."';";
 	$erg = sqlexecutesinglequery($query);
 	if(($userobj = mysql_fetch_object($erg)))
 		return true;
@@ -82,7 +82,7 @@ function checkResultSetElementExists($rsid,$aclass,$bclass)
 }
 function checkResultSetElementHasArcher($aclass,$bclass)
 {
-	$query = "SELECT * FROM participation WHERE BowClassID=".$bclass." AND ArcherClassID=".$aclass.";";
+	$query = "SELECT * FROM participation WHERE BowClassID='".sqlescape($bclass)."' AND ArcherClassID='".sqlescape($aclass)."';";
 	$erg = sqlexecutesinglequery($query);
 	if(($userobj = mysql_fetch_object($erg)))
 		return true;
@@ -108,7 +108,7 @@ function getUnusedResultSetElementListString()
 
 function checkResultSetElementContentExists($aclass,$bclass)
 {
-	$query = "SELECT * FROM resultsetelement WHERE BowClassID=".$bclass." AND ArcherClassID=".$aclass.";";
+	$query = "SELECT * FROM resultsetelement WHERE BowClassID='".sqlescape($bclass)."' AND ArcherClassID='".sqlescape($aclass)."';";
 	$erg = sqlexecutesinglequery($query);
 	if(($userobj = mysql_fetch_object($erg)))
 		return true;
@@ -140,7 +140,7 @@ function getResultSet($id, $formatter)
 	WHERE Points!=-1 AND Points !=-2 AND 
 	ResultSetElement.BowClassID = participation.BowClassID AND
 	ResultSetElement.ArcherClassID = participation.ArcherClassID AND
-	ResultSetElement.ResultSetID=".$id."
+	ResultSetElement.ResultSetID='".sqlescape($id)."'
 	ORDER BY Points DESC, Kills DESC, StartNr;";
 	$formatter->setRank("1");
 	$string = getFormattedResult($query,$formatter);
@@ -208,7 +208,7 @@ function getUnusedResultSetElementListWithActiveArchers($formatter)
 }
 function getResultSetElements($id,$formatter)
 {
-	$query = "SELECT resultSetElementID, ResultSetID, BowClassID, ArcherClassID FROM ResultSetElement WHERE ResultSetID=".$id.";";
+	$query = "SELECT resultSetElementID, ResultSetID, BowClassID, ArcherClassID FROM ResultSetElement WHERE ResultSetID='".sqlescape($id)."';";
 	return getFormattedResult($query,$formatter);
 }
 function getResultSets($formatter)

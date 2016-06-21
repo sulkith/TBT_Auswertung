@@ -41,20 +41,20 @@ class ArcherClassObject{
 	function setName($name)
 	{
 		sqlexecutesinglequery("
-			UPDATE archerclasses SET ClassName = '".$name."' WHERE ClassID=".$this->mID.";
+			UPDATE archerclasses SET ClassName = '".sqlescape($name)."' WHERE ClassID=\"".sqlescape($this->mID)."\";
 		");
 	}
 	function setComment($Comment)
 	{
 		sqlexecutesinglequery("
-			UPDATE archerclasses SET ClassComment = '".$Comment."' WHERE ClassID=".$this->mID.";
+			UPDATE archerclasses SET ClassComment = '".sqlescape($Comment)."' WHERE ClassID=\"".sqlescape($this->mID)."\";
 		");
 	}
 
 }
 function getACIDForArcherClassName($name)
 {
-	$query = "SELECT * FROM archerclasses WHERE ClassName='".$name."';";
+	$query = "SELECT * FROM archerclasses WHERE ClassName='".sqlescape($name)."';";
 	$erg = sqlexecutesinglequery($query);
 	if(!($ClassObj = mysql_fetch_object($erg)))
 		return -1;
@@ -62,7 +62,7 @@ function getACIDForArcherClassName($name)
 }
 function getArcherClassName($id)
 {
-	$query = "SELECT * FROM archerclasses WHERE ClassID='".$id."';";
+	$query = "SELECT * FROM archerclasses WHERE ClassID='".sqlescape($id)."';";
 	$erg = sqlexecutesinglequery($query);
 	if(!($ClassObj = mysql_fetch_object($erg)))
 		return -1;
@@ -72,7 +72,7 @@ function getArcherClassName($id)
 
 function checkArcherClassExists($id)
 {
-	$query = "SELECT * FROM archerclasses WHERE ClassID='".$id."';";
+	$query = "SELECT * FROM archerclasses WHERE ClassID='".sqlescape($id)."';";
 	$erg = sqlexecutesinglequery($query);
 	if(($userobj = mysql_fetch_object($erg)))
 		return true;
@@ -80,7 +80,7 @@ function checkArcherClassExists($id)
 }
 function checkArcherClassUsed($id)
 {
-	$query = "SELECT * FROM participation WHERE ArcherClassID='".$id."';";
+	$query = "SELECT * FROM participation WHERE ArcherClassID='".sqlescape($id)."';";
 	$erg = sqlexecutesinglequery($query);
 	if(($userobj = mysql_fetch_object($erg)))
 		return true;
@@ -90,7 +90,7 @@ function deleteArcherClass($id)
 {
 	if(checkArcherClassUsed($id))
 		return -1;
-	sqlexecutesinglequery("DELETE FROM archerclasses WHERE ClassID=".$id.";");
+	sqlexecutesinglequery("DELETE FROM archerclasses WHERE ClassID=\"".sqlescape($id)."\";");
 	return 1;
 	#TODO Check if class is used. if not used delete it.
 }
@@ -99,7 +99,7 @@ function AddArcherClass($name, $comment)
 	if(getIDArcherClassName($name) != -1)
 		return -1;
 	sqlexecutesinglequery("
-	INSERT INTO `archerclasses` (`ClassID`, `ClassName`, `ClassComment`) VALUES (NULL, '".$name."', '".$comment."');
+	INSERT INTO `archerclasses` (`ClassID`, `ClassName`, `ClassComment`) VALUES (NULL, '".sqlescape($name)."', '".sqlescape($comment)."');
 	");
 	return 0;
 }

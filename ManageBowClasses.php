@@ -78,7 +78,7 @@
 	
 	<div class="BodySmall">
 		<div class="UserModLeft">
-			<div style="height:50%; width:250px;">
+			<div style="width:250px;">
 					<?php
 						$formatter = new ClassOptionFormatter("<select name='BowClassSelect' size='20' style=\"width:100%\">");
 						echo getBowClasses($formatter);

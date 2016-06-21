@@ -29,7 +29,7 @@ class participationObject{
     function __construct1($pid)
     {    			
     	//Get data from the database
-        $query = "SELECT * FROM participation WHERE StartNr='".$pid."';";
+        $query = "SELECT * FROM participation WHERE StartNr='".sqlescape($pid)."';";
 		$erg = sqlexecutesinglequery($query);
 		$pObj = mysql_fetch_object($erg);
 		if(!$pObj){
@@ -65,7 +65,7 @@ class participationObject{
 	{
 		$this->mPoints = $p;
 		sqlexecutesinglequery("
-			UPDATE participation SET Points = '".$this->mPoints."' WHERE StartNr=".$this->mPID.";
+			UPDATE participation SET Points = '".sqlescape($this->mPoints)."' WHERE StartNr='".sqlescape($this->mPID)."';
 		");
 		
 	}
@@ -77,7 +77,7 @@ class participationObject{
 	{
 		$this->mKills = $p;
 		sqlexecutesinglequery("
-			UPDATE participation SET Kills = '".$this->mKills."' WHERE StartNr=".$this->mPID.";
+			UPDATE participation SET Kills = '".sqlescape($this->mKills)."' WHERE StartNr='".sqlescape($this->mPID)."';
 		");
 	}
 	function getGroup()
@@ -88,7 +88,7 @@ class participationObject{
 	{
 		$this->mGroupNr = intval($p);
 		sqlexecutesinglequery("
-			UPDATE participation SET GroupNr = '".$this->mGroupNr."' WHERE StartNr=".$this->mPID.";
+			UPDATE participation SET GroupNr = '".sqlescape($this->mGroupNr)."' WHERE StartNr='".sqlescape($this->mPID)."';
 		");
 	}
 	function getLastName()
@@ -99,7 +99,7 @@ class participationObject{
 	{
 		$this->mLastName = $p;
 		sqlexecutesinglequery("
-			UPDATE participation SET LastName = '".$this->mLastName."' WHERE StartNr=".$this->mPID.";
+			UPDATE participation SET LastName = '".sqlescape($this->mLastName)."' WHERE StartNr='".sqlescape($this->mPID)."';
 		");
 	}
 	function getFirstName()
@@ -110,7 +110,7 @@ class participationObject{
 	{
 		$this->mFirstName = $p;
 		sqlexecutesinglequery("
-			UPDATE participation SET FirstName = '".$this->mFirstName."' WHERE StartNr=".$this->mPID.";
+			UPDATE participation SET FirstName = '".sqlescape($this->mFirstName)."' WHERE StartNr='".sqlescape($this->mPID)."';
 		");
 	}
 	function getClub()
@@ -121,7 +121,7 @@ class participationObject{
 	{
 		$this->mClub = $p;
 		sqlexecutesinglequery("
-			UPDATE participation SET Club = '".$this->mClub."' WHERE StartNr=".$this->mPID.";
+			UPDATE participation SET Club = '".sqlescape($this->mClub)."' WHERE StartNr='".sqlescape($this->mPID)."';
 		");
 	}
 	function getEmail()
@@ -132,7 +132,7 @@ class participationObject{
 	{
 		$this->mEmail = $p;
 		sqlexecutesinglequery("
-			UPDATE participation SET EmailAddress = '".$this->mEmail."' WHERE StartNr=".$this->mPID.";
+			UPDATE participation SET EmailAddress = '".sqlescape($this->mEmail)."' WHERE StartNr='".sqlescape($this->mPID)."';
 		");
 	}
 	function getBowClass()
@@ -145,7 +145,7 @@ class participationObject{
 			error("Invalid Bow Class ".$p);
 		$this->mBowClass = $p;
 		sqlexecutesinglequery("
-			UPDATE participation SET BowClassID = '".$this->mBowClass."' WHERE StartNr=".$this->mPID.";
+			UPDATE participation SET BowClassID = '".sqlescape($this->mBowClass)."' WHERE StartNr='".sqlescape($this->mPID)."';
 		");
 	}
 	function getArcherClass()
@@ -158,7 +158,7 @@ class participationObject{
 			error("Invalid Archer Class ".$p);
 		$this->mArcherClass = $p;
 		sqlexecutesinglequery("
-			UPDATE participation SET ArcherClassID = '".$this->mArcherClass."' WHERE StartNr=".$this->mPID.";
+			UPDATE participation SET ArcherClassID = '".sqlescape($this->mArcherClass)."' WHERE StartNr='".sqlescape($this->mPID)."';
 		");
 	}
 	function getVeggie()
@@ -172,7 +172,7 @@ class participationObject{
 		else
 			$this->mVeggie=true;
 		sqlexecutesinglequery("
-			UPDATE participation SET Veggie = '".$this->mVeggie."' WHERE StartNr=".$this->mPID.";
+			UPDATE participation SET Veggie = '".sqlescape($this->mVeggie)."' WHERE StartNr='".sqlescape($this->mPID)."';
 		");
 	}
 	function isFinished()
@@ -190,11 +190,11 @@ class participationObject{
 }
 function payParticipation($id)
 {
-	sqlexecutesinglequery("UPDATE participation SET PaidDate =  CURRENT_DATE() WHERE StartNr=".$id.";");
+	sqlexecutesinglequery("UPDATE participation SET PaidDate =  CURRENT_DATE() WHERE StartNr='".sqlescape($id)."';");
 }
 function unPayParticipation($id)
 {
-	sqlexecutesinglequery("UPDATE participation SET PaidDate = \"0000-00-00\" WHERE StartNr=".$id.";");
+	sqlexecutesinglequery("UPDATE participation SET PaidDate = \"0000-00-00\" WHERE StartNr='".sqlescape($id)."';");
 }
 function addParticipation($FirstName, $LastName, $Club, $EmailAddress, $BowClassID, $ArcherClassID, $Veggie, $PaidDate)
 {
@@ -208,12 +208,12 @@ function addParticipation($FirstName, $LastName, $Club, $EmailAddress, $BowClass
 		return 1;
 	}
 	sqlexecutesinglequery("INSERT INTO `participation` (`StartNr`, `LastName`, `FirstName`, `Club`, `EmailAddress`, `BowClassID`, `ArcherClassID`, `Points`, `Kills`, `Veggie`, `RegisterDate`, `PaidDate`, `GroupNr`, `TicketID`) VALUES
-(NULL, '".$LastName."', '".$FirstName."', '".$Club."', '".$EmailAddress."', ".$BowClassID.", ".$ArcherClassID.", -1, -1, ".$Veggie.", CURRENT_DATE(), '".$PaidDate."', 0, '0');");
+(NULL, '".sqlescape($LastName)."', '".sqlescape($FirstName)."', '".sqlescape($Club)."', '".sqlescape($EmailAddress)."', '".sqlescape($BowClassID)."', '".sqlescape($ArcherClassID)."', -1, -1, '".sqlescape($Veggie)."', CURRENT_DATE(), '".sqlescape($PaidDate)."', 0, '0');");
 	return 0;
 }
 function getUserNameForUid($uid){
 	$uid = intval($uid,10);
-	$query = "SELECT * FROM users WHERE uid='".$uid."';";
+	$query = "SELECT * FROM users WHERE uid='".sqlescape($uid)."';";
 	$erg = sqlexecutesinglequery($query);
 	$userobj = mysql_fetch_object($erg);
 	if(isset($userobj->user))
@@ -234,7 +234,7 @@ function getNumFinishedParticipators()
 }
 function getNumParticipatorsForGroup($groupID)
 {
-	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE GroupNr = '".$groupID."';";
+	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE GroupNr = '".sqlescape($groupID)."';";
 	return getNumEntries($query);
 }
 function getNumParticipatorsNoPoints()
@@ -253,7 +253,7 @@ function getNumParticipatorsNoResult()
 ###############################################################
 function checkParticipationExists($id)
 {
-	$query = "SELECT * FROM participation WHERE StartNr='".$id."';";
+	$query = "SELECT * FROM participation WHERE StartNr='".sqlescape($id)."';";
 	$erg = sqlexecutesinglequery($query);
 	if(($userobj = mysql_fetch_object($erg)))
 		return true;
@@ -264,7 +264,7 @@ function checkParticipationExists($id)
 #  Formatter based Outputs
 ###############################################################
 function getParticipationsForGroup($groupID, $formatter){
-	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE GroupNr = '".$groupID."' ORDER BY LastName,FirstName;;";
+	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE GroupNr = '".sqlescape($groupID)."' ORDER BY LastName,FirstName;;";
 	return getFormattedResult($query,$formatter);
 }
 function getMissingParticipators($formatter)
@@ -289,12 +289,12 @@ function getAllParticipators($formatter)
 }
 function getParticipatorsWithBowClass($bcid, $formatter)
 {
-	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE BowClassID=".$bcid.";";
+	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE BowClassID='".sqlescape($bcid)."';";
 	return getFormattedResult($query,$formatter);
 }
 function getParticipatorsWithArcherClass($acid, $formatter)
 {
-	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE ArcherClassID=".$acid.";";
+	$query = "SELECT StartNr, FirstName, LastName FROM participation WHERE ArcherClassID='".sqlescape($acid)."';";
 	return getFormattedResult($query,$formatter);
 }
 function getNotPaidParticipators($formatter)
