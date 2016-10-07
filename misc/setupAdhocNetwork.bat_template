@@ -1,0 +1,6 @@
+rem please change password and rename file to *.bat
+netsh wlan stop hostednetwork
+netsh wlan set hostednetwork mode=allow ssid=TBTApp key=password
+netsh wlan start hostednetwork
+ipconfig
+pause
