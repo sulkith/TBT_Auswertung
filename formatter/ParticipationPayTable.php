@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include_once("resource/misc.php");
 class ParticipationPayTableFormatter{
 	function __construct()

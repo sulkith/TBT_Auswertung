@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 function sqlopenhandle(){
 	include ("settings/settings.php");
 	$chandle = mysql_connect($sqlhost, $sqldbuser, $sqldbpass) 

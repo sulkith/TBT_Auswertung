@@ -1,8 +1,8 @@
-﻿<?php
+<?php
 $sqlhost="localhost";
 $sqldbuser="root";
 $sqldbpass="";
-$sqldbname="tbttournament_Test1";
+$sqldbname="tbttournament_Herbst2016";
 $httpsservername="localhost/site";
 $createdbpass="PassworD";
 $development=1;

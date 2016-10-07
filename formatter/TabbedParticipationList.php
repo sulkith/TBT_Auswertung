@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include_once("formatter/ParticipationTools.php");
 class TabbedParticipationListFormatter{
 	private $mLink;

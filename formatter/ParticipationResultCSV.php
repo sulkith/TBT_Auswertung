@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 class ParticipationResultTableCSVFormatter{
 	private $mRank;
 	function __construct()

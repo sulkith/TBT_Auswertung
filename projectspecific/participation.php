@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include_once("resource/sqldb.php");
 include_once("resource/error.php");
 class participationObject{
@@ -203,7 +203,7 @@ function addParticipation($FirstName, $LastName, $Club, $EmailAddress, $BowClass
 	{
 		return 2;
 	}
-	if(!checkBowClassExists($ArcherClassID))
+	if(!checkBowClassExists($BowClassID))
 	{
 		return 1;
 	}

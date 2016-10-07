@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	include_once("resource/referrer.php");
 	include_once("projectspecific/result.php");
 	include_once("resource/error.php");
@@ -24,9 +24,9 @@
 			{
 				$errhndl->setError("Schützenklasse existiert nicht");
 			}
-			if(!checkBowClassExists($aclass))
+			if(!checkBowClassExists($bclass))
 			{
-				$errhndl->setError("Schützenklasse existiert nicht");
+				$errhndl->setError("Bogenklasse existiert nicht");
 			}
 			if(!checkResultSetElementIDExists($rsid))
 			{

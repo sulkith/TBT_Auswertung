@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	include_once("projectspecific/participation.php");
 	include_once("projectspecific/ArcherClass.php");
 	include_once("projectspecific/BowClass.php");
@@ -174,7 +174,7 @@
 	$dialog = 1;
 	include_once("projectspecific/template_head.php");
 ?>
-<table><tr><td>
+<table><tr><td style="vertical-align:top">
 <form action="ModifyParticipation.php" method="post">
 <div class="CaptionSmall">
 		<h1><?php echo $pObj->getCompleteName();?></h1>

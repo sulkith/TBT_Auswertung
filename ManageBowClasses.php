@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	include("projectspecific/BowClass.php");
 	include_once('resource/referrer.php');
 	include_once('resource/error.php');

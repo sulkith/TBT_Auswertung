@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 if(isset($ArcherSymbolsLegend))
 {
 	echo "<div class=\"Footer\">

@@ -1,1 +1,4 @@
-bitsadmin  /transfer job_name /download /priority normal http://localhost/tbtapp/csvexport.php d:\test.csv 
+:1
+timeout 60
+PowerShell.exe -ExecutionPolicy Bypass -File download.ps1
+goto 1

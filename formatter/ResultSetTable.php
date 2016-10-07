@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include_once("formatter/ResultSetElementList.php");
 class ResultSetTableFormatter{
 	private $rselemformatter;

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	include("resource/referrer.php");
 	include_once("resource/error.php");
 	include_once("projectspecific/participation.php");

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include_once("projectspecific/participation.php");
 function formatParticipationName($pid)
 {

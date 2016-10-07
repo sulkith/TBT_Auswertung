@@ -1,4 +1,4 @@
-﻿<?php 
+<?php 
 	include_once('resource/referrer.php');
 	setReferrer("index.php");
 	include_once('resource/error.php');
@@ -21,7 +21,8 @@
 		<input type=button style='width:100%' value='Ergebniserfassung' onclick="window.location.href='AlphabeticalParticipation.php'" /></td></tr><tr><td>
 		</td></tr><tr><td>
 		<input type=button style='width:100%' value='Ergebnislisten anzeigen' onclick="window.location.href='showResult.php'" /></td></tr><tr><td>
-		<input type=button style='width:100%' value='Statistik anzeigen' onclick="window.location.href='statistics.php'" /></td></tr>
+		<input type=button style='width:100%' value='Statistik anzeigen' onclick="window.location.href='statistics.php'" /></td></tr><tr><td>
+		<input type=button style='width:100%' value='CSV Export herunterladen' onclick="window.location.href='csvExport.php'" /></td></tr>
 		</table>
 	</div>
 <?php include_once("projectspecific/template_foot.php");?>
